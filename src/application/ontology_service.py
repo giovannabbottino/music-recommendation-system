@@ -9,3 +9,6 @@ class OntologyService:
         self.ontology = self.repo.load()
         print(f"Ontologia carregada com {len(list(self.ontology.classes()))} classes.")
         return self.ontology 
+
+    def apply_genre_preference_rule(self):
+        self.repo.apply_genre_preference_rule() 

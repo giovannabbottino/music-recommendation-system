@@ -11,6 +11,7 @@ This project uses an OWL ontology to represent entities and relationships in the
 - `src/infrastructure/`: Integration with external technologies (e.g., Owlready2)
 - `src/app.py`: Application entry point
 - `data/graph.owl`: OWL ontology file
+- `tests/`: Tests for the application
 
 ## How to Run Locally
 
@@ -26,6 +27,22 @@ pip install -r requirements.txt
 python src/app.py
 ```
 
+## Running Tests
+
+1. Make sure you have pytest installed:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Run the tests:
+
+```bash
+pytest tests
+```
+
+The tests include verification of SWRL rules for inferring user preferences based on their ratings.
+
 ## How to Run with Docker
 
 1. Build the Docker image:
@@ -34,7 +51,7 @@ python src/app.py
 docker build -t music-recommendation-system .
 ```
 
-2. Run the container:
+2. Run the application:
 
 ```bash
 docker run --rm -it music-recommendation-system
