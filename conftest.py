@@ -25,6 +25,7 @@ def sample_ontology(temp_ontology_file):
     with onto:
         class User(Thing): pass
         class Genre(Thing): pass
+        class Music(Thing): pass
         class Rating(Thing): pass
         class hasRating(DataProperty):
             domain = [Rating]
@@ -42,6 +43,13 @@ def sample_ontology(temp_ontology_file):
             domain = [User]
             range = [Genre]
             is_functional = True
+        class musicHasGenre(ObjectProperty):
+            domain = [Music]
+            range = [Genre]
+            is_functional = True
+        class recommendMusic(ObjectProperty):
+            domain = [User]
+            range = [Music]
     
     onto.save(file=temp_ontology_file)
     return onto, temp_ontology_file 

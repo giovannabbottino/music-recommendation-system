@@ -1,5 +1,6 @@
 import pytest
 from unittest.mock import patch, MagicMock
+from owlready2 import ObjectProperty
 from src.infrastructure.ontology_repository import OntologyRepository
 
 
@@ -75,6 +76,44 @@ class TestOntologyRepository:
         repo.load()
         
         repo.apply_genre_preference_rule()
+        
+        assert repo.ontology is not None
+
+    def test_apply_music_recommendation_rule_success(self, sample_ontology):
+        """Test successful application of music recommendation rule."""
+        onto, temp_file = sample_ontology
+        
+        user = onto.User("test_user")
+        genre = onto.Genre("rock")
+        music = onto.Music("test_music")
+        music.musicHasGenre.append(genre)
+        
+        user.hasPreference.append(genre)
+        
+        onto.save(file=temp_file)
+        
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        
+        repo.apply_music_recommendation_rule()
+        
+        assert repo.ontology is not None
+    
+    def test_apply_music_recommendation_rule_no_preference(self, sample_ontology):
+        """Test that music is not recommended when user has no genre preference."""
+        onto, temp_file = sample_ontology
+        
+        user = onto.User("test_user")
+        genre = onto.Genre("rock")
+        music = onto.Music("test_music")
+        music.musicHasGenre.append(genre)
+        
+        onto.save(file=temp_file)
+        
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        
+        repo.apply_music_recommendation_rule()
         
         assert repo.ontology is not None
     

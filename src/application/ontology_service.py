@@ -11,4 +11,7 @@ class OntologyService:
         return self.ontology 
 
     def apply_genre_preference_rule(self):
-        self.repo.apply_genre_preference_rule() 
+        self.repo.apply_genre_preference_rule()
+
+    def apply_music_recommendation_rule(self):
+        self.repo.apply_music_recommendation_rule()
