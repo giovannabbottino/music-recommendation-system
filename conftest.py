@@ -28,41 +28,34 @@ def sample_ontology(temp_ontology_file):
         class Singer(Thing): pass
         class Music(Thing): pass
         class Rating(Thing): pass
-        class hasRating(DataProperty):
+        class hasStars(DataProperty):
             domain = [Rating]
             range = [int]
             is_functional = True
-        class ratedBy(ObjectProperty):
+        class ratedMusic(ObjectProperty):
             domain = [Rating]
-            range = [User]
-            is_functional = True
-        class hasGenre(ObjectProperty):
-            domain = [Rating]
-            range = [Genre]
-            is_functional = True
-        class hasPreference(ObjectProperty):
-            domain = [User]
-            range = [Genre]
-            is_functional = True
-        class musicHasGenre(ObjectProperty):
-            domain = [Music]
-            range = [Genre]
-            is_functional = True
-        class recommendMusic(ObjectProperty):
-            domain = [User]
             range = [Music]
+            is_functional = True
         class hasSinger(ObjectProperty):
             domain = [Music]
             range = [Singer]
             is_functional = True
-        class favoriteSinger(ObjectProperty):
+        class hasGenre(ObjectProperty):
+            domain = [Music]
+            range = [Genre]
+            is_functional = True
+        class hasPreference(ObjectProperty):
             domain = [User]
-            range = [Singer]
-            is_functional = True
-        class ratesMusic(ObjectProperty):
-            domain = [Rating]
+            range = [Genre, Music, Singer]
+            is_functional = False
+        class hasRated(ObjectProperty):
+            domain = [User]
+            range = [Rating]
+            is_functional = False
+        class recommendMusic(ObjectProperty):
+            domain = [User]
             range = [Music]
-            is_functional = True
+            is_functional = False
     
     onto.save(file=temp_ontology_file)
     return onto, temp_ontology_file 

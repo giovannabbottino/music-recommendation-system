@@ -1,3 +1,3 @@
 class Genre:
-    def __init__(self, genre_name: str):
-        self.genre_name = genre_name 
+    def __init__(self, genreName: str):
+        self.genreName = genreName  # Nome do gênero musical

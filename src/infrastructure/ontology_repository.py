@@ -1,4 +1,4 @@
-from owlready2 import get_ontology, Imp, sync_reasoner_pellet, ObjectProperty
+from owlready2 import get_ontology, Imp, sync_reasoner_pellet, ObjectProperty, DataProperty
 
 class OntologyRepository:
     def __init__(self, path: str):
@@ -7,20 +7,46 @@ class OntologyRepository:
 
     def load(self):
         self.ontology = get_ontology(self.path).load()
+        onto = self.ontology
+        with onto:
+            # Data property
+            if not hasattr(onto, 'hasStars'):
+                class hasStars(onto.DataProperty):
+                    domain = [onto.Rating]
+                    range = [int]
+            # Object properties
+            if not hasattr(onto, 'ratedMusic'):
+                class ratedMusic(onto.ObjectProperty):
+                    domain = [onto.Rating]
+                    range = [onto.Music]
+            if not hasattr(onto, 'hasSinger'):
+                class hasSinger(onto.ObjectProperty):
+                    domain = [onto.Music]
+                    range = [onto.Singer]
+            if not hasattr(onto, 'hasGenre'):
+                class hasGenre(onto.ObjectProperty):
+                    domain = [onto.Music]
+                    range = [onto.Genre]
+            if not hasattr(onto, 'hasPreference'):
+                class hasPreference(onto.ObjectProperty):
+                    domain = [onto.User]
+                    range = [onto.Genre, onto.Music]
+            if not hasattr(onto, 'hasRated'):
+                class hasRated(onto.ObjectProperty):
+                    domain = [onto.User]
+                    range = [onto.Rating]
         return self.ontology
 
     def apply_genre_preference_rule(self):
         """
-        Adds and applies a SWRL rule:
-        If a user rated a music of a genre with 5 stars, infer that the user has a preference for that genre.
-        SWRL: User(?u) ^ Rating(?r) ^ Genre(?g) ^ hasRating(?r, 5) ^ ratedBy(?r, ?u) ^ hasGenre(?r, ?g) -> hasPreference(?u, ?g)
+        SWRL: User(?u) ^ Rating(?r) ^ Genre(?g) ^ hasStars(?r, 5) ^ hasRated(?u, ?r) ^ hasGenre(?m, ?g) ^ ratedMusic(?r, ?m) -> hasPreference(?u, ?g)
         """
         if self.ontology is None:
             raise Exception("Ontology not loaded.")
         onto = self.ontology
         with onto:
             rule = """
-                User(?u) ^ Rating(?r) ^ Genre(?g) ^ hasRating(?r, 5) ^ ratedBy(?r, ?u) ^ hasGenre(?r, ?g) -> hasPreference(?u, ?g)
+                User(?u) ^ Rating(?r) ^ Genre(?g) ^ hasStars(?r, 5) ^ hasRated(?u, ?r) ^ hasGenre(?m, ?g) ^ ratedMusic(?r, ?m) -> hasPreference(?u, ?g)
             """
             imp = Imp()
             imp.set_as_rule(rule)
@@ -29,21 +55,18 @@ class OntologyRepository:
 
     def apply_music_recommendation_rule(self):
         """
-        Adds and applies a SWRL rule for music recommendation:
-        If a user has a preference for a genre, recommend music of that genre.
-        SWRL: User(?u) ^ Genre(?g) ^ Music(?m) ^ hasPreference(?u, ?g) ^ musicHasGenre(?m, ?g) -> recommendMusic(?u, ?m)
+        SWRL: User(?u) ^ Genre(?g) ^ Music(?m) ^ hasPreference(?u, ?g) ^ hasGenre(?m, ?g) -> recommendMusic(?u, ?m)
         """
         if self.ontology is None:
             raise Exception("Ontology not loaded.")
         onto = self.ontology
         with onto:
             if not hasattr(onto, 'recommendMusic'):
-                class recommendMusic(ObjectProperty):
+                class recommendMusic(onto.ObjectProperty):
                     domain = [onto.User]
                     range = [onto.Music]
-            
             rule = """
-                User(?u) ^ Genre(?g) ^ Music(?m) ^ hasPreference(?u, ?g) ^ musicHasGenre(?m, ?g) -> recommendMusic(?u, ?m)
+                User(?u) ^ Genre(?g) ^ Music(?m) ^ hasPreference(?u, ?g) ^ hasGenre(?m, ?g) -> recommendMusic(?u, ?m)
             """
             imp = Imp()
             imp.set_as_rule(rule)
@@ -52,20 +75,18 @@ class OntologyRepository:
 
     def apply_favorite_singer_rule(self):
         """
-        Adds and applies a SWRL rule:
-        If a user rated a music of a singer with 5 stars, infer that the singer is a favorite of the user.
-        SWRL: User(?u) ^ Rating(?r) ^ Music(?m) ^ Singer(?s) ^ hasRating(?r, 5) ^ ratedBy(?r, ?u) ^ hasSinger(?m, ?s) ^ ratesMusic(?r, ?m) -> favoriteSinger(?u, ?s)
+        SWRL: User(?u) ^ Rating(?r) ^ Music(?m) ^ Singer(?s) ^ hasStars(?r, 5) ^ hasRated(?u, ?r) ^ hasSinger(?m, ?s) ^ ratedMusic(?r, ?m) -> hasPreference(?u, ?s)
         """
         if self.ontology is None:
             raise Exception("Ontology not loaded.")
         onto = self.ontology
         with onto:
-            if not hasattr(onto, 'favoriteSinger'):
-                class favoriteSinger(ObjectProperty):
+            if not hasattr(onto, 'hasPreference'):
+                class hasPreference(onto.ObjectProperty):
                     domain = [onto.User]
                     range = [onto.Singer]
             rule = """
-                User(?u) ^ Rating(?r) ^ Music(?m) ^ Singer(?s) ^ hasRating(?r, 5) ^ ratedBy(?r, ?u) ^ hasSinger(?m, ?s) ^ ratesMusic(?r, ?m) -> favoriteSinger(?u, ?s)
+                User(?u) ^ Rating(?r) ^ Music(?m) ^ Singer(?s) ^ hasStars(?r, 5) ^ hasRated(?u, ?r) ^ hasSinger(?m, ?s) ^ ratedMusic(?r, ?m) -> hasPreference(?u, ?s)
             """
             imp = Imp()
             imp.set_as_rule(rule)
@@ -74,20 +95,18 @@ class OntologyRepository:
 
     def apply_singer_recommendation_rule(self):
         """
-        Adds and applies a SWRL rule:
-        If a singer is considered a favorite, recommend other songs by that artist to the user.
-        SWRL: User(?u) ^ Singer(?s) ^ Music(?m) ^ favoriteSinger(?u, ?s) ^ hasSinger(?m, ?s) -> recommendMusic(?u, ?m)
+        SWRL: User(?u) ^ Singer(?s) ^ Music(?m) ^ hasPreference(?u, ?s) ^ hasSinger(?m, ?s) -> recommendMusic(?u, ?m)
         """
         if self.ontology is None:
             raise Exception("Ontology not loaded.")
         onto = self.ontology
         with onto:
             if not hasattr(onto, 'recommendMusic'):
-                class recommendMusic(ObjectProperty):
+                class recommendMusic(onto.ObjectProperty):
                     domain = [onto.User]
                     range = [onto.Music]
             rule = """
-                User(?u) ^ Singer(?s) ^ Music(?m) ^ favoriteSinger(?u, ?s) ^ hasSinger(?m, ?s) -> recommendMusic(?u, ?m)
+                User(?u) ^ Singer(?s) ^ Music(?m) ^ hasPreference(?u, ?s) ^ hasSinger(?m, ?s) -> recommendMusic(?u, ?m)
             """
             imp = Imp()
             imp.set_as_rule(rule)

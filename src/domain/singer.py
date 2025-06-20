@@ -1,3 +1,3 @@
 class Singer:
-    def __init__(self, singer_name: str):
-        self.singer_name = singer_name 
+    def __init__(self, singerName: str):
+        self.singerName = singerName  # Nome artístico do cantor
