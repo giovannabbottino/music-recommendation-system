@@ -37,7 +37,6 @@ class OntologyRepository:
             raise Exception("Ontology not loaded.")
         onto = self.ontology
         with onto:
-            # First, ensure the recommendMusic property exists
             if not hasattr(onto, 'recommendMusic'):
                 class recommendMusic(ObjectProperty):
                     domain = [onto.User]
@@ -45,6 +44,28 @@ class OntologyRepository:
             
             rule = """
                 User(?u) ^ Genre(?g) ^ Music(?m) ^ hasPreference(?u, ?g) ^ musicHasGenre(?m, ?g) -> recommendMusic(?u, ?m)
+            """
+            imp = Imp()
+            imp.set_as_rule(rule)
+        sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
+        onto.save(file=self.path)
+
+    def apply_favorite_singer_rule(self):
+        """
+        Adds and applies a SWRL rule:
+        If a user rated a music of a singer with 5 stars, infer that the singer is a favorite of the user.
+        SWRL: User(?u) ^ Rating(?r) ^ Music(?m) ^ Singer(?s) ^ hasRating(?r, 5) ^ ratedBy(?r, ?u) ^ hasSinger(?m, ?s) ^ ratesMusic(?r, ?m) -> favoriteSinger(?u, ?s)
+        """
+        if self.ontology is None:
+            raise Exception("Ontology not loaded.")
+        onto = self.ontology
+        with onto:
+            if not hasattr(onto, 'favoriteSinger'):
+                class favoriteSinger(ObjectProperty):
+                    domain = [onto.User]
+                    range = [onto.Singer]
+            rule = """
+                User(?u) ^ Rating(?r) ^ Music(?m) ^ Singer(?s) ^ hasRating(?r, 5) ^ ratedBy(?r, ?u) ^ hasSinger(?m, ?s) ^ ratesMusic(?r, ?m) -> favoriteSinger(?u, ?s)
             """
             imp = Imp()
             imp.set_as_rule(rule)
