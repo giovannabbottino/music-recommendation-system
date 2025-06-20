@@ -19,8 +19,11 @@ class OntologyService:
     def get_user(self, userName: str, email: str):
         return self.repo.get_user(userName, email)
 
-    def list_musics(self):
-        return self.repo.list_musics()
+    def list_musics(self, limit=10, search='', order_by='title', order_dir='asc', user_name=None):
+        return self.repo.list_musics(limit=limit, search=search, order_by=order_by, order_dir=order_dir, user_name=user_name)
 
     def add_rating(self, userName: str, music_title: str, stars: int):
         return self.repo.add_rating(userName, music_title, stars)
+
+    def get_user_rating(self, userName: str, music_title: str):
+        return self.repo.get_user_rating(userName, music_title)

@@ -115,20 +115,39 @@ class OntologyRepository:
         user = next((u for u in onto.individuals() if u.__class__.__name__ == 'User' and u.name == userName and hasattr(u, 'email') and email in u.email), None)
         return user 
 
-    def list_musics(self):
+    def list_musics(self, limit=10, search='', order_by='title', order_dir='asc', user_name=None):
         if self.ontology is None:
             self.ontology = self.load()
         onto = self.ontology
+        user_ratings = {}
+        if order_by == 'user_rating' and user_name:
+            user = next((u for u in onto.individuals() if u.__class__.__name__ == 'User' and u.name == user_name), None)
+            if user:
+                for r in getattr(user, 'hasRated', []):
+                    if hasattr(r, 'ratedMusic') and hasattr(r, 'hasStars') and r.hasStars:
+                        for m in r.ratedMusic:
+                            user_ratings[m.name] = r.hasStars[0]
         musics = []
         for m in onto.individuals():
             if m.__class__.__name__ == 'Music':
-                musics.append({
+                music_dict = {
                     'title': m.name,
                     'year': m.hasYear[0] if hasattr(m, 'hasYear') and m.hasYear else '',
                     'singer': m.hasSinger[0].name if hasattr(m, 'hasSinger') and m.hasSinger else '',
                     'genre': m.hasGenre[0].name if hasattr(m, 'hasGenre') and m.hasGenre else ''
-                })
-        return musics
+                }
+                if order_by == 'user_rating' and user_name:
+                    music_dict['user_rating'] = user_ratings.get(m.name)
+                musics.append(music_dict)
+        if search:
+            search_lower = search.lower()
+            musics = [m for m in musics if any(search_lower in str(v).lower() for v in m.values())]
+        reverse = order_dir == 'desc'
+        if order_by == 'user_rating' and user_name:
+            musics = sorted(musics, key=lambda m: (m.get('user_rating') is None, m.get('user_rating')), reverse=reverse)
+        else:
+            musics = sorted(musics, key=lambda m: str(m.get(order_by, '')).lower(), reverse=reverse)
+        return musics[:limit]
 
     def add_rating(self, userName: str, music_title: str, stars: int):
         if self.ontology is None:
@@ -160,3 +179,17 @@ class OntologyRepository:
             user.hasRated.append(rating)
         onto.save(file=self.path)
         return rating 
+
+    def get_user_rating(self, userName: str, music_title: str):
+        if self.ontology is None:
+            self.ontology = self.load()
+        onto = self.ontology
+        user = next((u for u in onto.individuals() if u.__class__.__name__ == 'User' and u.name == userName), None)
+        music = next((m for m in onto.individuals() if m.__class__.__name__ == 'Music' and m.name == music_title), None)
+        if not user or not music:
+            return None
+        for r in getattr(user, 'hasRated', []):
+            if hasattr(r, 'ratedMusic') and music in getattr(r, 'ratedMusic', []):
+                if hasattr(r, 'hasStars') and r.hasStars:
+                    return r.hasStars[0]
+        return None

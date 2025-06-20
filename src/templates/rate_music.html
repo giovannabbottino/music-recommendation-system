@@ -7,7 +7,40 @@
 </head>
 <body>
 <div class="container mt-5">
+    <div class="d-flex justify-content-end mb-3">
+        <a href="/logout" class="btn btn-outline-danger">Logout</a>
+    </div>
     <h2>Rate Songs</h2>
+    <form class="row g-3 mb-4" method="get">
+        <div class="col-md-3">
+            <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ search }}">
+        </div>
+        <div class="col-md-2">
+            <select class="form-select" name="limit">
+                {% for l in [5, 10, 20, 50, 100] %}
+                    <option value="{{ l }}" {% if limit == l %}selected{% endif %}>Show {{ l }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" name="order_by">
+                <option value="title" {% if order_by == 'title' %}selected{% endif %}>Order by Title</option>
+                <option value="year" {% if order_by == 'year' %}selected{% endif %}>Order by Year</option>
+                <option value="singer" {% if order_by == 'singer' %}selected{% endif %}>Order by Singer/Band</option>
+                <option value="genre" {% if order_by == 'genre' %}selected{% endif %}>Order by Genre</option>
+                <option value="user_rating" {% if order_by == 'user_rating' %}selected{% endif %}>Order by User Rating</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select class="form-select" name="order_dir">
+                <option value="asc" {% if order_dir == 'asc' %}selected{% endif %}>Ascending</option>
+                <option value="desc" {% if order_dir == 'desc' %}selected{% endif %}>Descending</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Apply</button>
+        </div>
+    </form>
     {% if musics %}
     <form method="POST">
         <table class="table">
@@ -30,9 +63,14 @@
                     <td>{{ music.genre }}</td>
                     <td>
                         <select name="rating_{{ music.title }}" class="form-select">
+                            {% if music.user_rating %}
+                                <option value="{{ music.user_rating }}" selected>{{ music.user_rating }}</option>
+                            {% endif %}
                             <option value="">Select</option>
                             {% for i in range(1,6) %}
-                                <option value="{{ i }}">{{ i }}</option>
+                                {% if not music.user_rating or i != music.user_rating %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </td>

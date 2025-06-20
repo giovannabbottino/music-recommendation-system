@@ -32,7 +32,7 @@ def register():
         try:
             service.register_user(userName, birthYear, email)
             flash('User registered successfully!', 'success')
-            return redirect(url_for('register'))
+            return redirect(url_for('index'))
         except Exception as e:
             if 'already exists' in str(e):
                 session['user'] = {'userName': userName, 'email': email}
@@ -80,7 +80,17 @@ def logout():
 @app.route('/rate-music', methods=['GET', 'POST'])
 @login_required
 def rate_music():
-    musics = service.list_musics()
+    # Get query params for limit, search, order_by, order_dir
+    limit = request.args.get('limit', default=10, type=int)
+    search = request.args.get('search', default='', type=str)
+    order_by = request.args.get('order_by', default='title', type=str)
+    order_dir = request.args.get('order_dir', default='asc', type=str)
+    user = session.get('user')
+    user_name = user['userName'] if user else None
+    musics = service.list_musics(limit=limit, search=search, order_by=order_by, order_dir=order_dir, user_name=user_name)
+    for m in musics:
+        if 'user_rating' not in m:
+            m['user_rating'] = service.get_user_rating(user_name, m['title']) if user_name else None
     if request.method == 'POST':
         music_title = request.form['submit_rating']
         rating_value = request.form.get(f'rating_{music_title}')
@@ -93,8 +103,8 @@ def rate_music():
                 flash(f'Error registering rating: {str(e)}', 'danger')
         else:
             flash('Please select a rating.', 'warning')
-        return redirect(url_for('rate_music'))
-    return render_template('rate_music.html', musics=musics)
+        return redirect(url_for('rate_music', limit=limit, search=search, order_by=order_by, order_dir=order_dir))
+    return render_template('rate_music.html', musics=musics, limit=limit, search=search, order_by=order_by, order_dir=order_dir)
 
 if __name__ == "__main__":
     app.run(debug=True)
