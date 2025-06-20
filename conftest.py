@@ -66,3 +66,27 @@ def sample_ontology(temp_ontology_file):
     
     onto.save(file=temp_ontology_file)
     return onto, temp_ontology_file 
+
+@pytest.fixture
+def genre_data(sample_ontology):
+    """Fixture to create a user, three genres, and three ratings for genre-related tests."""
+    onto, temp_file = sample_ontology
+    user = onto.User("test_user")
+    rock_genre = onto.Genre("rock")
+    jazz_genre = onto.Genre("jazz")
+    pop_genre = onto.Genre("pop")
+    onto.save(file=temp_file)
+    return onto, temp_file, user, rock_genre, jazz_genre, pop_genre 
+
+@pytest.fixture
+def singer_data(sample_ontology):
+    """Fixture to create a user, a singer, and two songs for singer-related tests."""
+    onto, temp_file = sample_ontology
+    user = onto.User("test_user")
+    singer = onto.Singer("queen")
+    music1 = onto.Music("bohemian_rhapsody")
+    music2 = onto.Music("another_one_bites_the_dust")
+    music1.hasSinger.append(singer)
+    music2.hasSinger.append(singer)
+    onto.save(file=temp_file)
+    return onto, temp_file, user, singer, music1, music2 

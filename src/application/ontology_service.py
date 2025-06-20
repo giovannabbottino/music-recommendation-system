@@ -18,3 +18,6 @@ class OntologyService:
 
     def apply_favorite_singer_rule(self):
         self.repo.apply_favorite_singer_rule()
+
+    def apply_singer_recommendation_rule(self):
+        self.repo.apply_singer_recommendation_rule()

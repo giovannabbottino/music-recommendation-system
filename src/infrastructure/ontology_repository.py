@@ -70,4 +70,26 @@ class OntologyRepository:
             imp = Imp()
             imp.set_as_rule(rule)
         sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
+        onto.save(file=self.path)
+
+    def apply_singer_recommendation_rule(self):
+        """
+        Adds and applies a SWRL rule:
+        If a singer is considered a favorite, recommend other songs by that artist to the user.
+        SWRL: User(?u) ^ Singer(?s) ^ Music(?m) ^ favoriteSinger(?u, ?s) ^ hasSinger(?m, ?s) -> recommendMusic(?u, ?m)
+        """
+        if self.ontology is None:
+            raise Exception("Ontology not loaded.")
+        onto = self.ontology
+        with onto:
+            if not hasattr(onto, 'recommendMusic'):
+                class recommendMusic(ObjectProperty):
+                    domain = [onto.User]
+                    range = [onto.Music]
+            rule = """
+                User(?u) ^ Singer(?s) ^ Music(?m) ^ favoriteSinger(?u, ?s) ^ hasSinger(?m, ?s) -> recommendMusic(?u, ?m)
+            """
+            imp = Imp()
+            imp.set_as_rule(rule)
+        sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
         onto.save(file=self.path) 
