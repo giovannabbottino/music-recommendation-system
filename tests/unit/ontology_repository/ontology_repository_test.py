@@ -45,4 +45,39 @@ class TestOntologyRepository:
         user2 = next((u for u in onto2.individuals() if u.name == 'bob'), None)
         assert user2 is not None
         assert hasattr(user2, 'birthYear')
-        assert hasattr(user2, 'email') 
+        assert hasattr(user2, 'email')
+
+    def test_add_music(self, sample_ontology):
+        _, temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        music = repo.add_music('Imagine', '1971', 'John Lennon', 'Rock')
+        assert music is not None
+        assert music.name == 'Imagine'
+        assert hasattr(music, 'hasYear')
+        assert hasattr(music, 'hasSinger')
+        assert hasattr(music, 'hasGenre')
+        assert music.hasYear[0] == '1971'
+        assert music.hasSinger[0].name == 'John Lennon'
+        assert music.hasGenre[0].name == 'Rock'
+        # Verifica persistência
+        repo2 = OntologyRepository(temp_file)
+        onto2 = repo2.load()
+        music2 = next((m for m in onto2.individuals() if m.name == 'Imagine'), None)
+        assert music2 is not None
+        assert music2.hasYear[0] == '1971'
+        assert music2.hasSinger[0].name == 'John Lennon'
+        assert music2.hasGenre[0].name == 'Rock'
+
+    def test_add_music_existing_singer_and_genre(self, sample_ontology):
+        onto, temp_file = sample_ontology
+        # Cria cantor e gênero previamente
+        singer = onto.Singer('Queen')
+        genre = onto.Genre('Rock')
+        onto.save(file=temp_file)
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        music = repo.add_music('Bohemian Rhapsody', '1975', 'Queen', 'Rock')
+        assert music is not None
+        assert music.hasSinger[0].name == 'Queen'
+        assert music.hasGenre[0].name == 'Rock' 

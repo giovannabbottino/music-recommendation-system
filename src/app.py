@@ -27,5 +27,20 @@ def register():
             flash(f'Erro ao cadastrar usuário: {str(e)}', 'danger')
     return render_template('register.html')
 
+@app.route('/add-music', methods=['GET', 'POST'])
+def add_music():
+    if request.method == 'POST':
+        title = request.form['title']
+        year = request.form['year']
+        singer = request.form['singer']
+        genre = request.form['genre']
+        try:
+            service.add_music(title, year, singer, genre)
+            flash('Música adicionada com sucesso!', 'success')
+        except Exception as e:
+            flash(f'Erro ao adicionar música: {str(e)}', 'danger')
+        return redirect(url_for('add_music'))
+    return render_template('add_music.html')
+
 if __name__ == "__main__":
     app.run(debug=True)

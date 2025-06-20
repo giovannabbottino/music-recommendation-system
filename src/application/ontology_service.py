@@ -12,3 +12,6 @@ class OntologyService:
 
     def register_user(self, userName: str, birthYear: str, email: str):
         return self.repo.add_user(userName, birthYear, email)
+
+    def add_music(self, title: str, year: str, singer: str, genre: str):
+        return self.repo.add_music(title, year, singer, genre)
