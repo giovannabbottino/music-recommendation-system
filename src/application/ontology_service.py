@@ -27,3 +27,6 @@ class OntologyService:
 
     def get_user_rating(self, userName: str, music_title: str):
         return self.repo.get_user_rating(userName, music_title)
+
+    def list_recommended_musics(self, user_name):
+        return self.repo.list_recommended_musics(user_name)

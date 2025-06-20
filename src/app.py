@@ -20,8 +20,12 @@ def login_required(f):
     return decorated_function
 
 @app.route('/')
+@login_required
 def index():
-    return redirect(url_for('rate_music'))
+    user = session.get('user')
+    user_name = user['userName'] if user else None
+    recommended = service.list_recommended_musics(user_name)
+    return render_template('recommended.html', musics=recommended)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

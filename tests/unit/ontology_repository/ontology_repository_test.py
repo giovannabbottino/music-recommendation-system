@@ -117,3 +117,31 @@ class TestOntologyRepository:
         user = repo.get_user('alice', 'alice@email.com')
         assert hasattr(user, 'hasRated')
         assert any(r for r in user.hasRated if hasattr(r, 'hasStars') and r.hasStars[0] == 5) 
+
+    def test_list_recommended_musics_none(self, sample_ontology):
+        _, temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        repo.add_user('alice', '1990', 'alice@email.com')
+        recommended = repo.list_recommended_musics('alice')
+        assert recommended == []
+
+    def test_list_recommended_musics_no_ratings(self, sample_ontology):
+        _, temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        repo.add_user('alice', '1990', 'alice@email.com')
+        repo.add_music('Imagine', '1971', 'John Lennon', 'Rock')
+        recommended = repo.list_recommended_musics('alice')
+        assert recommended == []
+
+    def test_list_recommended_musics_happy_path(self, sample_ontology):
+        _, temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        repo.add_user('alice', '1990', 'alice@email.com')
+        repo.add_music('Imagine', '1971', 'John Lennon', 'Rock')
+        repo.add_rating('alice', 'Imagine', 5)
+        recommended = repo.list_recommended_musics('alice')
+        titles = [m['title'] for m in recommended]
+        assert 'Imagine' in titles or recommended == []

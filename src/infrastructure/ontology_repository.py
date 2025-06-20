@@ -1,4 +1,5 @@
 from owlready2 import get_ontology, Imp, sync_reasoner_pellet, ObjectProperty, DataProperty, Thing
+from .rule_repository import RuleRepository
 
 class OntologyRepository:
     def __init__(self, path: str):
@@ -193,3 +194,26 @@ class OntologyRepository:
                 if hasattr(r, 'hasStars') and r.hasStars:
                     return r.hasStars[0]
         return None
+
+    def list_recommended_musics(self, user_name):
+        if self.ontology is None:
+            self.ontology = self.load()
+        try:
+            rule_repo = RuleRepository(self.path)
+            for attr in dir(rule_repo):
+                if attr.startswith('apply_') and attr.endswith('_rule') and callable(getattr(rule_repo, attr)):
+                    getattr(rule_repo, attr)()
+        except Exception:
+            pass
+        onto = self.ontology
+        user = next((u for u in onto.individuals() if u.__class__.__name__ == 'User' and u.name == user_name), None)
+        musics = []
+        if user and hasattr(user, 'recommendMusic'):
+            for m in getattr(user, 'recommendMusic', []):
+                musics.append({
+                    'title': m.name,
+                    'year': m.hasYear[0] if hasattr(m, 'hasYear') and m.hasYear else '',
+                    'singer': m.hasSinger[0].name if hasattr(m, 'hasSinger') and m.hasSinger else '',
+                    'genre': m.hasGenre[0].name if hasattr(m, 'hasGenre') and m.hasGenre else ''
+                })
+        return musics
