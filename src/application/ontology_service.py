@@ -15,3 +15,12 @@ class OntologyService:
 
     def add_music(self, title: str, year: str, singer: str, genre: str):
         return self.repo.add_music(title, year, singer, genre)
+
+    def get_user(self, userName: str, email: str):
+        return self.repo.get_user(userName, email)
+
+    def list_musics(self):
+        return self.repo.list_musics()
+
+    def add_rating(self, userName: str, music_title: str, stars: int):
+        return self.repo.add_rating(userName, music_title, stars)

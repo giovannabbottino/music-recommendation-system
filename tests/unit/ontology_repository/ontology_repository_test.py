@@ -60,7 +60,6 @@ class TestOntologyRepository:
         assert music.hasYear[0] == '1971'
         assert music.hasSinger[0].name == 'John Lennon'
         assert music.hasGenre[0].name == 'Rock'
-        # Verifica persistência
         repo2 = OntologyRepository(temp_file)
         onto2 = repo2.load()
         music2 = next((m for m in onto2.individuals() if m.name == 'Imagine'), None)
@@ -71,7 +70,6 @@ class TestOntologyRepository:
 
     def test_add_music_existing_singer_and_genre(self, sample_ontology):
         onto, temp_file = sample_ontology
-        # Cria cantor e gênero previamente
         singer = onto.Singer('Queen')
         genre = onto.Genre('Rock')
         onto.save(file=temp_file)
@@ -80,4 +78,42 @@ class TestOntologyRepository:
         music = repo.add_music('Bohemian Rhapsody', '1975', 'Queen', 'Rock')
         assert music is not None
         assert music.hasSinger[0].name == 'Queen'
-        assert music.hasGenre[0].name == 'Rock' 
+        assert music.hasGenre[0].name == 'Rock'
+
+    def test_add_user_duplicate(self, sample_ontology):
+        _, temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        user1 = repo.add_user('john', '1980', 'john@email.com')
+        assert user1 is not None
+        with pytest.raises(Exception) as excinfo:
+            repo.add_user('john', '1980', 'john@email.com')
+        assert 'already exists' in str(excinfo.value)
+
+    def test_get_user(self, sample_ontology):
+        _, temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        repo.add_user('alice', '1990', 'alice@email.com')
+        user = repo.get_user('alice', 'alice@email.com')
+        assert user is not None
+        assert user.name == 'alice'
+        assert 'alice@email.com' in user.email
+        user_none = repo.get_user('bob', 'bob@email.com')
+        assert user_none is None
+
+    def test_add_rating(self, sample_ontology):
+        _, temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        repo.add_user('alice', '1990', 'alice@email.com')
+        repo.add_music('Imagine', '1971', 'John Lennon', 'Rock')
+        rating = repo.add_rating('alice', 'Imagine', 5)
+        assert rating is not None
+        assert hasattr(rating, 'hasStars')
+        assert rating.hasStars[0] == 5
+        assert hasattr(rating, 'ratedMusic')
+        assert rating.ratedMusic[0].name == 'Imagine'
+        user = repo.get_user('alice', 'alice@email.com')
+        assert hasattr(user, 'hasRated')
+        assert any(r for r in user.hasRated if hasattr(r, 'hasStars') and r.hasStars[0] == 5) 

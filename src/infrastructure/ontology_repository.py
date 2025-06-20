@@ -9,12 +9,10 @@ class OntologyRepository:
         self.ontology = get_ontology(self.path).load()
         onto = self.ontology
         with onto:
-            # Data property
             if not hasattr(onto, 'hasStars'):
                 class hasStars(onto.DataProperty):
                     domain = [onto.Rating]
                     range = [int]
-            # Object properties
             if not hasattr(onto, 'ratedMusic'):
                 class ratedMusic(onto.ObjectProperty):
                     domain = [onto.Rating]
@@ -42,6 +40,9 @@ class OntologyRepository:
             self.ontology = self.load()
         onto = self.ontology
         with onto:
+            existing_user = next((u for u in onto.individuals() if u.__class__.__name__ == 'User' and u.name == userName and hasattr(u, 'email') and email in u.email and hasattr(u, 'birthYear') and birthYear in u.birthYear), None)
+            if existing_user:
+                raise Exception('A user with the same name, email, and birth year already exists.')
             if not hasattr(onto, 'User') or onto.User is None or not callable(onto.User):
                 class User(Thing):
                     pass
@@ -106,3 +107,56 @@ class OntologyRepository:
             music.hasGenre.append(genre_instance)
         onto.save(file=self.path)
         return music 
+
+    def get_user(self, userName: str, email: str):
+        if self.ontology is None:
+            self.ontology = self.load()
+        onto = self.ontology
+        user = next((u for u in onto.individuals() if u.__class__.__name__ == 'User' and u.name == userName and hasattr(u, 'email') and email in u.email), None)
+        return user 
+
+    def list_musics(self):
+        if self.ontology is None:
+            self.ontology = self.load()
+        onto = self.ontology
+        musics = []
+        for m in onto.individuals():
+            if m.__class__.__name__ == 'Music':
+                musics.append({
+                    'title': m.name,
+                    'year': m.hasYear[0] if hasattr(m, 'hasYear') and m.hasYear else '',
+                    'singer': m.hasSinger[0].name if hasattr(m, 'hasSinger') and m.hasSinger else '',
+                    'genre': m.hasGenre[0].name if hasattr(m, 'hasGenre') and m.hasGenre else ''
+                })
+        return musics
+
+    def add_rating(self, userName: str, music_title: str, stars: int):
+        if self.ontology is None:
+            self.ontology = self.load()
+        onto = self.ontology
+        user = next((u for u in onto.individuals() if u.__class__.__name__ == 'User' and u.name == userName), None)
+        music = next((m for m in onto.individuals() if m.__class__.__name__ == 'Music' and m.name == music_title), None)
+        if not user or not music:
+            raise Exception('Usuário ou música não encontrados')
+        with onto:
+            if not hasattr(onto, 'Rating') or onto.Rating is None or not callable(onto.Rating):
+                class Rating(Thing): pass
+                setattr(onto, 'Rating', Rating)
+            rating = onto.Rating(f"{userName}_{music_title}_rating")
+            if not hasattr(onto, 'hasStars'):
+                class hasStars(onto.DataProperty):
+                    domain = [onto.Rating]
+                    range = [int]
+            if not hasattr(onto, 'ratedMusic'):
+                class ratedMusic(onto.ObjectProperty):
+                    domain = [onto.Rating]
+                    range = [onto.Music]
+            if not hasattr(onto, 'hasRated'):
+                class hasRated(onto.ObjectProperty):
+                    domain = [onto.User]
+                    range = [onto.Rating]
+            rating.hasStars = [stars]
+            rating.ratedMusic = [music]
+            user.hasRated.append(rating)
+        onto.save(file=self.path)
+        return rating 
