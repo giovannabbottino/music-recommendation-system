@@ -10,14 +10,5 @@ class OntologyService:
         print(f"Ontologia carregada com {len(list(self.ontology.classes()))} classes.")
         return self.ontology 
 
-    def apply_genre_preference_rule(self):
-        self.repo.apply_genre_preference_rule()
-
-    def apply_music_recommendation_rule(self):
-        self.repo.apply_music_recommendation_rule()
-
-    def apply_favorite_singer_rule(self):
-        self.repo.apply_favorite_singer_rule()
-
-    def apply_singer_recommendation_rule(self):
-        self.repo.apply_singer_recommendation_rule()
+    def register_user(self, userName: str, birthYear: str, email: str):
+        return self.repo.add_user(userName, birthYear, email)

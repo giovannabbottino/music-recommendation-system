@@ -1,4 +1,4 @@
-from owlready2 import get_ontology, Imp, sync_reasoner_pellet, ObjectProperty, DataProperty
+from owlready2 import get_ontology, Imp, sync_reasoner_pellet, ObjectProperty, DataProperty, Thing
 
 class OntologyRepository:
     def __init__(self, path: str):
@@ -37,78 +37,27 @@ class OntologyRepository:
                     range = [onto.Rating]
         return self.ontology
 
-    def apply_genre_preference_rule(self):
-        """
-        SWRL: User(?u) ^ Rating(?r) ^ Genre(?g) ^ hasStars(?r, 5) ^ hasRated(?u, ?r) ^ hasGenre(?m, ?g) ^ ratedMusic(?r, ?m) -> hasPreference(?u, ?g)
-        """
+    def add_user(self, userName: str, birthYear: str, email: str):
         if self.ontology is None:
-            raise Exception("Ontology not loaded.")
+            self.ontology = self.load()
         onto = self.ontology
         with onto:
-            rule = """
-                User(?u) ^ Rating(?r) ^ Genre(?g) ^ hasStars(?r, 5) ^ hasRated(?u, ?r) ^ hasGenre(?m, ?g) ^ ratedMusic(?r, ?m) -> hasPreference(?u, ?g)
-            """
-            imp = Imp()
-            imp.set_as_rule(rule)
-        sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
-        onto.save(file=self.path)
-
-    def apply_music_recommendation_rule(self):
-        """
-        SWRL: User(?u) ^ Genre(?g) ^ Music(?m) ^ hasPreference(?u, ?g) ^ hasGenre(?m, ?g) -> recommendMusic(?u, ?m)
-        """
-        if self.ontology is None:
-            raise Exception("Ontology not loaded.")
-        onto = self.ontology
-        with onto:
-            if not hasattr(onto, 'recommendMusic'):
-                class recommendMusic(onto.ObjectProperty):
+            if not hasattr(onto, 'User') or onto.User is None or not callable(onto.User):
+                class User(Thing):
+                    pass
+                setattr(onto, 'User', User)
+            if not hasattr(onto, 'birthYear') or onto.birthYear is None:
+                class BirthYearProperty(DataProperty):
                     domain = [onto.User]
-                    range = [onto.Music]
-            rule = """
-                User(?u) ^ Genre(?g) ^ Music(?m) ^ hasPreference(?u, ?g) ^ hasGenre(?m, ?g) -> recommendMusic(?u, ?m)
-            """
-            imp = Imp()
-            imp.set_as_rule(rule)
-        sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
-        onto.save(file=self.path)
-
-    def apply_favorite_singer_rule(self):
-        """
-        SWRL: User(?u) ^ Rating(?r) ^ Music(?m) ^ Singer(?s) ^ hasStars(?r, 5) ^ hasRated(?u, ?r) ^ hasSinger(?m, ?s) ^ ratedMusic(?r, ?m) -> hasPreference(?u, ?s)
-        """
-        if self.ontology is None:
-            raise Exception("Ontology not loaded.")
-        onto = self.ontology
-        with onto:
-            if not hasattr(onto, 'hasPreference'):
-                class hasPreference(onto.ObjectProperty):
+                    range = [str]
+                setattr(onto, 'birthYear', BirthYearProperty)
+            if not hasattr(onto, 'email') or onto.email is None:
+                class EmailProperty(DataProperty):
                     domain = [onto.User]
-                    range = [onto.Singer]
-            rule = """
-                User(?u) ^ Rating(?r) ^ Music(?m) ^ Singer(?s) ^ hasStars(?r, 5) ^ hasRated(?u, ?r) ^ hasSinger(?m, ?s) ^ ratedMusic(?r, ?m) -> hasPreference(?u, ?s)
-            """
-            imp = Imp()
-            imp.set_as_rule(rule)
-        sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
+                    range = [str]
+                setattr(onto, 'email', EmailProperty)
+            user = onto.User(userName)
+            user.birthYear = [birthYear]
+            user.email = [email]
         onto.save(file=self.path)
-
-    def apply_singer_recommendation_rule(self):
-        """
-        SWRL: User(?u) ^ Singer(?s) ^ Music(?m) ^ hasPreference(?u, ?s) ^ hasSinger(?m, ?s) -> recommendMusic(?u, ?m)
-        """
-        if self.ontology is None:
-            raise Exception("Ontology not loaded.")
-        onto = self.ontology
-        with onto:
-            if not hasattr(onto, 'recommendMusic'):
-                class recommendMusic(onto.ObjectProperty):
-                    domain = [onto.User]
-                    range = [onto.Music]
-            rule = """
-                User(?u) ^ Singer(?s) ^ Music(?m) ^ hasPreference(?u, ?s) ^ hasSinger(?m, ?s) -> recommendMusic(?u, ?m)
-            """
-            imp = Imp()
-            imp.set_as_rule(rule)
-        sync_reasoner_pellet(infer_property_values=True, infer_data_property_values=True)
-        onto.save(file=self.path) 
+        return user 

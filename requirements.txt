@@ -1,3 +1,5 @@
-owlready2
+Flask>=3.1.1
+owlready2>=0.48
+rdflib>=7.1.4
 pytest
 pytest-cov
