@@ -7,7 +7,11 @@
 </head>
 <body>
 <div class="container mt-5">
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            <a href="/recommendations" class="btn btn-outline-success">Recommendations</a>
+            <a href="/add_music" class="btn btn-outline-info">Add Music</a>
+        </div>
         <a href="/logout" class="btn btn-outline-danger">Logout</a>
     </div>
     <h2>Rate Songs</h2>
@@ -42,7 +46,7 @@
         </div>
     </form>
     {% if musics %}
-    <form method="POST">
+    <form method="POST" action="/rate">
         <table class="table">
             <thead>
                 <tr>
@@ -56,26 +60,23 @@
             </thead>
             <tbody>
             {% for music in musics %}
-                <tr>
+                <tr {% if music.user_rating %}class="table-success"{% endif %}>
                     <td>{{ music.title }}</td>
                     <td>{{ music.year }}</td>
                     <td>{{ music.singer }}</td>
                     <td>{{ music.genre }}</td>
                     <td>
                         <select name="rating_{{ music.title }}" class="form-select">
-                            {% if music.user_rating %}
-                                <option value="{{ music.user_rating }}" selected>{{ music.user_rating }}</option>
-                            {% endif %}
                             <option value="">Select</option>
                             {% for i in range(1,6) %}
-                                {% if not music.user_rating or i != music.user_rating %}
-                                    <option value="{{ i }}">{{ i }}</option>
-                                {% endif %}
+                                <option value="{{ i }}" {% if music.user_rating and music.user_rating == i %}selected{% endif %}>{{ i }}</option>
                             {% endfor %}
                         </select>
                     </td>
                     <td>
-                        <button type="submit" name="submit_rating" value="{{ music.title }}" class="btn btn-primary btn-sm">Rate</button>
+                        <button type="submit" name="submit_rating" value="{{ music.title }}" class="btn btn-primary btn-sm">
+                            {% if music.user_rating %}Update{% else %}Rate{% endif %}
+                        </button>
                     </td>
                 </tr>
             {% endfor %}

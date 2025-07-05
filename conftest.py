@@ -2,7 +2,8 @@ import os
 import sys
 import pytest
 import tempfile
-from owlready2 import get_ontology, Thing, DataProperty, ObjectProperty
+from owlready2 import get_ontology, Thing
+from uuid import uuid4
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
 
@@ -18,68 +19,96 @@ def temp_ontology_file():
         os.unlink(tmp_path)
 
 @pytest.fixture
-def sample_ontology(temp_ontology_file):
-    """Fixture to create a sample ontology with basic structure."""
-    
-    onto = get_ontology(f"file://{temp_ontology_file}")
-    with onto:
-        class User(Thing): pass
-        class Genre(Thing): pass
-        class Singer(Thing): pass
-        class Music(Thing): pass
-        class Rating(Thing): pass
-        class hasStars(DataProperty):
-            domain = [Rating]
-            range = [int]
-            is_functional = True
-        class ratedMusic(ObjectProperty):
-            domain = [Rating]
-            range = [Music]
-            is_functional = True
-        class hasSinger(ObjectProperty):
-            domain = [Music]
-            range = [Singer]
-            is_functional = True
-        class hasGenre(ObjectProperty):
-            domain = [Music]
-            range = [Genre]
-            is_functional = True
-        class hasPreference(ObjectProperty):
-            domain = [User]
-            range = [Genre, Music, Singer]
-            is_functional = False
-        class hasRated(ObjectProperty):
-            domain = [User]
-            range = [Rating]
-            is_functional = False
-        class recommendMusic(ObjectProperty):
-            domain = [User]
-            range = [Music]
-            is_functional = False
-    
-    onto.save(file=temp_ontology_file)
-    return onto, temp_ontology_file 
+def sample_ontology():
+    """Fixture to create a sample ontology with basic structure and unique IRI."""
+    import uuid
+    with tempfile.NamedTemporaryFile(suffix='.owl', delete=False) as tmp:
+        temp_path = tmp.name
+    try:
+        unique_iri = f"http://example.org/music_{uuid.uuid4()}#"
+        onto = get_ontology(unique_iri)
+        with onto:
+            class User(Thing): pass
+            class Music(Thing): pass
+            class Genre(Thing): pass
+            class Singer(Thing): pass
+            class Rating(Thing): pass
+        onto.save(file=temp_path)
+        yield temp_path
+    finally:
+        if os.path.exists(temp_path):
+            os.unlink(temp_path)
 
 @pytest.fixture
-def genre_data(sample_ontology):
-    """Fixture to create a user, three genres, and three ratings for genre-related tests."""
-    onto, temp_file = sample_ontology
-    user = onto.User("test_user")
-    rock_genre = onto.Genre("rock")
-    jazz_genre = onto.Genre("jazz")
-    pop_genre = onto.Genre("pop")
-    onto.save(file=temp_file)
-    return onto, temp_file, user, rock_genre, jazz_genre, pop_genre 
+def genre_data():
+    """Fixture to create a user and three genres for genre-related tests."""
+    
+    with tempfile.NamedTemporaryFile(suffix='.owl', delete=False) as tmp:
+        temp_path = tmp.name
+    
+    try:
+        onto = get_ontology(temp_path)
+        
+        with onto:
+            class User(Thing): pass
+            class Music(Thing): pass
+            class Genre(Thing): pass
+            class Singer(Thing): pass
+            class Rating(Thing): pass
+
+        user = onto.User("test_user")
+        user.birthYear = ["1990"]
+        user.email = ["test@email.com"]
+        
+        rock_genre = onto.Genre("Rock")
+        rock_genre.name = ["Rock"]
+        
+        jazz_genre = onto.Genre("Jazz")
+        jazz_genre.name = ["Jazz"]
+        
+        pop_genre = onto.Genre("Pop")
+        pop_genre.name = ["Pop"]
+        
+        onto.save(file=temp_path)
+        yield onto, temp_path, user, rock_genre, jazz_genre, pop_genre
+    finally:
+        if os.path.exists(temp_path):
+            os.unlink(temp_path)
 
 @pytest.fixture
-def singer_data(sample_ontology):
+def singer_data():
     """Fixture to create a user, a singer, and two songs for singer-related tests."""
-    onto, temp_file = sample_ontology
-    user = onto.User("test_user")
-    singer = onto.Singer("queen")
-    music1 = onto.Music("bohemian_rhapsody")
-    music2 = onto.Music("another_one_bites_the_dust")
-    music1.hasSinger.append(singer)
-    music2.hasSinger.append(singer)
-    onto.save(file=temp_file)
-    return onto, temp_file, user, singer, music1, music2 
+    
+    with tempfile.NamedTemporaryFile(suffix='.owl', delete=False) as tmp:
+        temp_path = tmp.name
+    
+    try:
+        onto = get_ontology(temp_path)
+        
+        with onto:
+            class User(Thing): pass
+            class Music(Thing): pass
+            class Genre(Thing): pass
+            class Singer(Thing): pass
+            class Rating(Thing): pass
+        
+        user = onto.User("test_user")
+        user.birthYear = ["1990"]
+        user.email = ["test@email.com"]
+        
+        singer = onto.Singer("queen")
+        singer.name = ["Queen"]
+        
+        music1 = onto.Music("bohemian_rhapsody")
+        music1.title = ["Bohemian Rhapsody"]
+        music1.hasSinger = [singer]
+        
+        music2 = onto.Music("another_one_bites_the_dust")
+        music2.title = ["Another One Bites the Dust"]
+        music2.hasSinger = [singer]
+        
+        onto.save(file=temp_path)
+        yield onto, temp_path, user, singer, music1, music2
+    finally:
+        if os.path.exists(temp_path):
+            os.unlink(temp_path)

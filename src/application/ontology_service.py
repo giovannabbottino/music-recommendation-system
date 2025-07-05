@@ -7,8 +7,7 @@ class OntologyService:
 
     def load_ontology(self):
         self.ontology = self.repo.load()
-        print(f"Ontologia carregada com {len(list(self.ontology.classes()))} classes.")
-        return self.ontology 
+        return self.ontology
 
     def register_user(self, userName: str, birthYear: str, email: str):
         return self.repo.add_user(userName, birthYear, email)
