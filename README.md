@@ -10,7 +10,7 @@ This project uses an OWL ontology to represent entities and relationships in the
 - `src/application/`: Application services (e.g., OntologyService)
 - `src/infrastructure/`: Integration with external technologies (e.g., Owlready2)
 - `src/app.py`: Application entry point
-- `data/graph.owl`: OWL ontology file
+- `data/data.rdf`: OWL ontology file
 - `tests/`: Tests for the application
 
 ## How to Run Locally
@@ -59,7 +59,7 @@ docker run --rm -it music-recommendation-system
 
 ## About the Ontology
 
-The file `data/graph.owl` should be a valid OWL ontology in Turtle or RDF/XML format. If you encounter parsing errors with `owlready2`, validate the file using an [online Turtle validator](https://ttl-online-tool.com/) or Protégé.
+The file `data/data.rdf` should be a valid OWL ontology in Turtle or RDF/XML format. If you encounter parsing errors with `owlready2`, validate the file using an [online Turtle validator](https://ttl-online-tool.com/) or Protégé.
 
 ## Contact
 

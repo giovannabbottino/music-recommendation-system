@@ -191,11 +191,9 @@ class OntologyRepository:
                 all_individuals = list(self.onto.individuals())
                 print(f"Debug: Found {len(all_individuals)} total individuals")
                 for individual in all_individuals:
-                    print(f"Debug: Individual: {individual}, name: {individual.name}, class: {individual.__class__.__name__}")
                     if hasattr(individual, '__class__') and hasattr(individual.__class__, '__name__'):
                         if individual.__class__.__name__ == 'Music':
                             music_instances.add(individual)
-                            print(f"Debug: Found music individual: {individual}")
             except Exception as e:
                 print(f"Error searching individuals: {e}")
         
@@ -293,42 +291,54 @@ class OntologyRepository:
         music = None
         if self.onto:
             user = self.onto.search_one(iri="*#" + userName)
+            # Try different ways to find the music
             music = self.onto.search_one(iri="*#" + music_title.replace(" ", "_"))
+            if not music:
+                # Try searching by title property
+                all_individuals = list(self.onto.individuals())
+                for individual in all_individuals:
+                    if hasattr(individual, 'title') and individual.title and individual.title[0] == music_title:
+                        music = individual
+                        break
         
-        if not user or not music:
-            raise Exception('Usuário ou música não encontrados')
+        if not user:
+            raise Exception(f'Usuário {userName} não encontrado')
+        if not music:
+            raise Exception(f'Música {music_title} não encontrada')
         
+        # Create a unique rating name
         rating_name = f"{userName}_{music_title.replace(' ', '_')}_rating"
-        rating = None
-        if self.onto:
-            rating = self.onto.search_one(iri="*#" + rating_name)
         
-        if rating:
-            rating.hasStars = [stars]
-            rating.ratedMusic = [music]
-            if not hasattr(user, 'hasRated'):
-                user.hasRated = []
-            if rating not in user.hasRated:
-                user.hasRated.append(rating)
+        # Check if rating already exists
+        existing_rating = None
+        if hasattr(user, 'hasRated') and user.hasRated:
+            for r in user.hasRated:
+                if hasattr(r, 'ratedMusic') and r.ratedMusic and r.ratedMusic[0] == music:
+                    existing_rating = r
+                    break
+        
+        if existing_rating:
+            # Update existing rating
+            existing_rating.hasStars = [stars]
             self.save()
-            return rating
+            return existing_rating
         
+        # Create new rating
         if self.onto and hasattr(self.onto, 'Rating') and self.onto.Rating is not None:
             try:
                 with self.onto:
-                    rating_class = self.onto.Rating
-                    if rating_class is None:
-                        raise Exception('Rating class not found in ontology')
-                    rating = rating_class(rating_name)
+                    rating = self.onto.Rating(rating_name)
                     rating.hasStars = [stars]
                     rating.ratedMusic = [music]
+                    
+                    # Add rating to user
                     if not hasattr(user, 'hasRated'):
                         user.hasRated = []
                     user.hasRated.append(rating)
+                
                 self.save()
                 return rating
             except Exception as e:
-                print(f"Error creating rating: {e}")
                 raise Exception(f'Failed to create rating: {e}')
         
         raise Exception('Ontology not loaded or Rating class not available')
@@ -343,12 +353,52 @@ class OntologyRepository:
         music = None
         if self.onto:
             user = self.onto.search_one(iri="*#" + userName)
+            # Try different ways to find the music
             music = self.onto.search_one(iri="*#" + music_title.replace(" ", "_"))
+            if not music:
+                # Try searching by title property
+                all_individuals = list(self.onto.individuals())
+                for individual in all_individuals:
+                    if hasattr(individual, 'title') and individual.title and individual.title[0] == music_title:
+                        music = individual
+                        break
         
-        if user and hasattr(user, 'hasRated'):
+        print(f"Debug: get_user_rating - userName: {userName}, music_title: {music_title}")
+        print(f"Debug: get_user_rating - user found: {user is not None}")
+        print(f"Debug: get_user_rating - music found: {music is not None}")
+        
+        if not user or not music:
+            print(f"Debug: get_user_rating - returning None (user or music not found)")
+            return None
+        
+        if hasattr(user, 'hasRated') and user.hasRated:
+            print(f"Debug: get_user_rating - user has {len(user.hasRated)} ratings")
             for rating in user.hasRated:
-                if hasattr(rating, 'ratedMusic') and rating.ratedMusic and rating.ratedMusic[0] == music:
-                    return rating.hasStars[0] if hasattr(rating, 'hasStars') and rating.hasStars else None
+                if hasattr(rating, 'ratedMusic') and rating.ratedMusic:
+                    rated_music = rating.ratedMusic[0]
+                    print(f"Debug: get_user_rating - checking rating for music: {rated_music.name if rated_music else 'None'}")
+                    # Compare by name or title
+                    if rated_music and music:
+                        rated_music_title = None
+                        if hasattr(rated_music, 'title') and rated_music.title:
+                            rated_music_title = rated_music.title[0]
+                        elif hasattr(rated_music, 'name'):
+                            rated_music_title = rated_music.name
+                        
+                        music_title_compare = None
+                        if hasattr(music, 'title') and music.title:
+                            music_title_compare = music.title[0]
+                        elif hasattr(music, 'name'):
+                            music_title_compare = music.name
+                        
+                        if rated_music_title == music_title_compare:
+                            if hasattr(rating, 'hasStars') and rating.hasStars:
+                                print(f"Debug: get_user_rating - found rating: {rating.hasStars[0]}")
+                                return rating.hasStars[0]
+        else:
+            print(f"Debug: get_user_rating - user has no ratings")
+        
+        print(f"Debug: get_user_rating - returning None (no rating found)")
         return None
 
     def list_recommended_musics(self, user_name):

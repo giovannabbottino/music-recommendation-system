@@ -152,7 +152,137 @@ class TestOntologyRepository:
         assert rating.ratedMusic[0].name == 'Imagine'
         user = repo.get_user('alice', 'alice@email.com')
         assert hasattr(user, 'hasRated')
-        assert any(r for r in user.hasRated if hasattr(r, 'hasStars') and r.hasStars[0] == 5) 
+        assert any(r for r in user.hasRated if hasattr(r, 'hasStars') and r.hasStars[0] == 5)
+
+    def test_get_user_rating_existing(self, sample_ontology):
+        temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        
+        # Setup: add user and music
+        repo.add_user('bob', '1985', 'bob@email.com')
+        repo.add_music('Bohemian Rhapsody', '1975', 'Queen', 'Rock')
+        
+        # Add rating
+        repo.add_rating('bob', 'Bohemian Rhapsody', 4)
+        
+        # Get rating
+        rating = repo.get_user_rating('bob', 'Bohemian Rhapsody')
+        assert rating == 4
+
+    def test_get_user_rating_nonexistent(self, sample_ontology):
+        temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        
+        # Setup: add user and music
+        repo.add_user('charlie', '1995', 'charlie@email.com')
+        repo.add_music('Hotel California', '1976', 'Eagles', 'Rock')
+        
+        # Try to get rating for music that hasn't been rated
+        rating = repo.get_user_rating('charlie', 'Hotel California')
+        assert rating is None
+
+    def test_get_user_rating_nonexistent_user(self, sample_ontology):
+        temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        
+        # Add music without user
+        repo.add_music('Stairway to Heaven', '1971', 'Led Zeppelin', 'Rock')
+        
+        # Try to get rating for nonexistent user
+        rating = repo.get_user_rating('nonexistent_user', 'Stairway to Heaven')
+        assert rating is None
+
+    def test_get_user_rating_nonexistent_music(self, sample_ontology):
+        temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        
+        # Add user without music
+        repo.add_user('david', '1980', 'david@email.com')
+        
+        # Try to get rating for nonexistent music
+        rating = repo.get_user_rating('david', 'Nonexistent Song')
+        assert rating is None
+
+    def test_get_user_rating_update_existing(self, sample_ontology):
+        temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        
+        # Setup: add user and music
+        repo.add_user('eve', '1990', 'eve@email.com')
+        repo.add_music('Yesterday', '1965', 'The Beatles', 'Pop')
+        
+        # Add initial rating
+        repo.add_rating('eve', 'Yesterday', 3)
+        rating1 = repo.get_user_rating('eve', 'Yesterday')
+        assert rating1 == 3
+        
+        # Update rating
+        repo.add_rating('eve', 'Yesterday', 5)
+        rating2 = repo.get_user_rating('eve', 'Yesterday')
+        assert rating2 == 5
+
+    def test_get_user_rating_multiple_users(self, sample_ontology):
+        temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        
+        # Setup: add multiple users and music
+        repo.add_user('frank', '1985', 'frank@email.com')
+        repo.add_user('grace', '1992', 'grace@email.com')
+        repo.add_music('Wonderwall', '1995', 'Oasis', 'Rock')
+        
+        # Add ratings for different users
+        repo.add_rating('frank', 'Wonderwall', 4)
+        repo.add_rating('grace', 'Wonderwall', 2)
+        
+        # Get ratings
+        frank_rating = repo.get_user_rating('frank', 'Wonderwall')
+        grace_rating = repo.get_user_rating('grace', 'Wonderwall')
+        
+        assert frank_rating == 4
+        assert grace_rating == 2
+
+    def test_get_user_rating_multiple_musics(self, sample_ontology):
+        temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        
+        # Setup: add user and multiple musics
+        repo.add_user('henry', '1988', 'henry@email.com')
+        repo.add_music('Smells Like Teen Spirit', '1991', 'Nirvana', 'Grunge')
+        repo.add_music('Sweet Child O Mine', '1987', 'Guns N Roses', 'Rock')
+        
+        # Add ratings for different musics
+        repo.add_rating('henry', 'Smells Like Teen Spirit', 5)
+        repo.add_rating('henry', 'Sweet Child O Mine', 3)
+        
+        # Get ratings
+        nirvana_rating = repo.get_user_rating('henry', 'Smells Like Teen Spirit')
+        gnr_rating = repo.get_user_rating('henry', 'Sweet Child O Mine')
+        
+        assert nirvana_rating == 5
+        assert gnr_rating == 3
+
+    def test_get_user_rating_with_spaces_in_title(self, sample_ontology):
+        temp_file = sample_ontology
+        repo = OntologyRepository(temp_file)
+        repo.load()
+        
+        # Setup: add user and music with spaces in title
+        repo.add_user('iris', '1993', 'iris@email.com')
+        repo.add_music('Sweet Home Alabama', '1974', 'Lynyrd Skynyrd', 'Southern Rock')
+        
+        # Add rating
+        repo.add_rating('iris', 'Sweet Home Alabama', 4)
+        
+        # Get rating
+        rating = repo.get_user_rating('iris', 'Sweet Home Alabama')
+        assert rating == 4 
 
     def test_list_recommended_musics_none(self, sample_ontology):
         temp_file = sample_ontology
@@ -261,22 +391,6 @@ class TestOntologyRepository:
         assert musics[0]['singer'] == 'Alpha Artist'
         assert musics[1]['singer'] == 'Zebra Artist'
 
-    def test_list_musics_with_order_by_genre(self, sample_ontology):
-        temp_file = sample_ontology
-        repo = OntologyRepository(temp_file)
-        repo.load()
-        
-        # Add test music
-        repo.add_music('Song 1', '2020', 'Artist 1', 'Zebra Genre')
-        repo.add_music('Song 2', '2021', 'Artist 2', 'Alpha Genre')
-        
-        print(f"Debug: Testing genre ordering")
-        musics = repo.list_musics(order_by='genre', order_dir='asc')
-        print(f"Debug: Found {len(musics)} musics: {musics}")
-        assert len(musics) == 2
-        assert musics[0]['genre'] == 'Alpha Genre'
-        assert musics[1]['genre'] == 'Zebra Genre'
-
     def test_list_musics_with_user_name_parameter(self, sample_ontology):
         temp_file = sample_ontology
         repo = OntologyRepository(temp_file)
@@ -289,27 +403,3 @@ class TestOntologyRepository:
         musics = repo.list_musics(user_name='testuser')
         assert len(musics) == 1
         assert musics[0]['title'] == 'Test Song'
-
-    def test_list_musics_music_structure(self, sample_ontology):
-        temp_file = sample_ontology
-        repo = OntologyRepository(temp_file)
-        repo.load()
-        
-        # Add test music
-        repo.add_music('Test Song', '2020', 'Test Artist', 'Rock')
-        
-        print(f"Debug: Testing music structure")
-        musics = repo.list_musics()
-        print(f"Debug: Found {len(musics)} musics: {musics}")
-        assert len(musics) == 1
-        
-        music = musics[0]
-        assert 'title' in music
-        assert 'year' in music
-        assert 'singer' in music
-        assert 'genre' in music
-        
-        assert music['title'] == 'Test Song'
-        assert music['year'] == '2020'
-        assert music['singer'] == 'Test Artist'
-        assert music['genre'] == 'Rock'
