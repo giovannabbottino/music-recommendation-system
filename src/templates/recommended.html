@@ -11,6 +11,25 @@
         <a href="/logout" class="btn btn-outline-danger">Logout</a>
     </div>
     <h2>Recommended Songs</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <form class="row g-3 mb-4" method="get">
+        <div class="col-md-2">
+            <select class="form-select" name="limit">
+                {% for l in [5, 10, 20, 50, 100] %}
+                    <option value="{{ l }}" {% if limit|int == l %}selected{% endif %}>Show {{ l }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Apply</button>
+        </div>
+    </form>
     {% if musics %}
     <table class="table">
         <thead>

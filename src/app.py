@@ -114,8 +114,19 @@ def rate_music():
 @app.route('/recommendations')
 @login_required
 def recommendations():
-    recommended_musics = service.list_recommended_musics(session['user'])
-    return render_template('recommended.html', musics=recommended_musics, user=session['user'])
+    limit = request.args.get('limit', '10')
+    try:
+        limit = int(limit)
+    except ValueError:
+        limit = 10
+
+    preferences = service.get_user_genre_preferences(session['user'])
+    
+    all_preferences = service.get_user_preferences(session['user'])
+    
+    recommended_musics = service.list_recommended_musics(session['user'], limit)
+    
+    return render_template('recommended.html', musics=recommended_musics, user=session['user'], limit=limit)
 
 @app.route('/add_music', methods=['GET', 'POST'])
 @login_required
@@ -134,39 +145,6 @@ def add_music():
             flash(str(e), 'error')
     
     return render_template('add_music.html')
-
-@app.route('/test_rating')
-@login_required
-def test_rating():
-    try:
-        # Adicionar uma música de teste
-        music = service.add_music('Test Song', '2020', 'Test Artist', 'Rock')
-        
-        # Adicionar um rating
-        rating = service.add_rating(session['user'], 'Test Song', 4)
-        
-        # Buscar o rating
-        user_rating = service.get_user_rating(session['user'], 'Test Song')
-        
-        return f"""
-        <h2>Rating Test Results</h2>
-        <p><strong>Music:</strong> {music}</p>
-        <p><strong>Rating Created:</strong> {rating}</p>
-        <p><strong>User Rating Retrieved:</strong> {user_rating}</p>
-        <p><strong>User:</strong> {session['user']}</p>
-        """
-    except Exception as e:
-        return f"<h2>Error</h2><p>{e}</p>"
-
-@app.route('/debug_music/<music_title>')
-@login_required
-def debug_music(music_title):
-    try:
-        # Buscar a música
-        music = service.repo.onto.search_one(iri="*#" + music_title.replace(" ", "_"))
-        return f"Music found: {music}, name: {music.name if music else 'None'}"
-    except Exception as e:
-        return f"Error: {e}"
 
 @app.route('/logout')
 def logout():

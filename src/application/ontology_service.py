@@ -27,5 +27,17 @@ class OntologyService:
     def get_user_rating(self, userName: str, music_title: str):
         return self.repo.get_user_rating(userName, music_title)
 
-    def list_recommended_musics(self, user_name):
-        return self.repo.list_recommended_musics(user_name)
+    def list_recommended_musics(self, user_name, limit=10):
+        return self.repo.list_recommended_musics(user_name, limit)
+
+    def get_user_genre_preferences(self, user_name: str):
+        return self.repo.get_user_genre_preferences(user_name)
+
+    def add_genre_preference(self, user_name: str, genre_name: str):
+        return self.repo.add_genre_preference(user_name, genre_name)
+
+    def get_user_preferences(self, user_name: str):
+        return self.repo.get_user_preferences(user_name)
+
+    def infer_genre_preferences(self, user_name: str):
+        return self.repo.infer_genre_preferences(user_name)

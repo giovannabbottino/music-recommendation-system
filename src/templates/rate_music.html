@@ -15,6 +15,13 @@
         <a href="/logout" class="btn btn-outline-danger">Logout</a>
     </div>
     <h2>Rate Songs</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
     <form class="row g-3 mb-4" method="get">
         <div class="col-md-3">
             <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request.args.get('search', '') }}">

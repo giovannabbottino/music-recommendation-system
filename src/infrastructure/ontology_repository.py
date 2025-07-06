@@ -172,16 +172,12 @@ class OntologyRepository:
         if self.onto is not None:
             self.ensure_classes()
         
-        print(f"Debug: list_musics called with limit={limit}, search='{search}', order_by='{order_by}'")
-        print(f"Debug: onto is {self.onto}")
-        
         musics = []
-        music_instances = set()  # Use set to avoid duplicates
+        music_instances = set()
         
         if self.onto and hasattr(self.onto, 'Music') and self.onto.Music is not None:
             try:
                 instances = list(self.onto.Music.instances())
-                print(f"Debug: Found {len(instances)} music instances via Music.instances()")
                 music_instances.update(instances)
             except Exception as e:
                 print(f"Error with Music.instances(): {e}")
@@ -189,7 +185,6 @@ class OntologyRepository:
         if self.onto:
             try:
                 all_individuals = list(self.onto.individuals())
-                print(f"Debug: Found {len(all_individuals)} total individuals")
                 for individual in all_individuals:
                     if hasattr(individual, '__class__') and hasattr(individual.__class__, '__name__'):
                         if individual.__class__.__name__ == 'Music':
@@ -199,87 +194,65 @@ class OntologyRepository:
         
         if self.onto:
             try:
-                music_search = self.onto.search(iri="*Music*")
-                print(f"Debug: Found {len(music_search)} individuals with 'Music' in IRI")
-                for item in music_search:
-                    # Check if this item has music-like properties
-                    if hasattr(item, 'title') or hasattr(item, 'hasYear') or hasattr(item, 'year'):
-                        music_instances.add(item)
-                        print(f"Debug: Found potential music: {item}")
-                    # Also check if the item's class name is 'Music'
-                    elif hasattr(item, '__class__') and hasattr(item.__class__, '__name__') and item.__class__.__name__ == 'Music':
-                        music_instances.add(item)
-                        print(f"Debug: Found music by class name: {item}")
-                    # If the item has a title property, consider it music
-                    elif hasattr(item, 'title') and item.title:
-                        music_instances.add(item)
-                        print(f"Debug: Found music by title property: {item}")
+                search_results = list(self.onto.search(iri="*"))
+                for result in search_results:
+                    if hasattr(result, '__class__') and hasattr(result.__class__, '__name__'):
+                        if result.__class__.__name__ == 'Music':
+                            music_instances.add(result)
             except Exception as e:
-                print(f"Error searching by IRI: {e}")
+                print(f"Error with onto.search(): {e}")
         
-        # Also try to find music by searching for individuals with title property
-        if self.onto:
-            try:
-                all_individuals = list(self.onto.individuals())
-                for individual in all_individuals:
-                    if hasattr(individual, 'title') and individual.title and len(individual.title) > 0:
-                        music_instances.add(individual)
-            except Exception as e:
-                print(f"Error searching by title: {e}")
+        music_instances = list(music_instances)
+        if order_by in ['title', 'year', 'singer']:
+            def get_sort_key(music):
+                if order_by == 'title':
+                    return getattr(music, 'title', [''])[0] if hasattr(music, 'title') and music.title else ''
+                elif order_by == 'year':
+                    return getattr(music, 'year', [''])[0] if hasattr(music, 'year') and music.year else ''
+                elif order_by == 'singer':
+                    if hasattr(music, 'hasSinger') and music.hasSinger:
+                        singer = music.hasSinger[0]
+                        return getattr(singer, 'displayName', [''])[0] if hasattr(singer, 'displayName') and singer.displayName else ''
+                    return ''
+                return ''
+            music_instances.sort(key=get_sort_key, reverse=(order_dir == 'desc'))
         
-        print(f"Debug: Total music instances found: {len(music_instances)}")
-        
-        # Process the found music instances
+        count = 0
         for music in music_instances:
-            
-            title = None
-            if hasattr(music, 'title') and music.title:
-                title = music.title[0]
-            elif hasattr(music, 'hasTitle') and music.hasTitle:
-                title = music.hasTitle[0]
-            
-            if title:
-                singer_name = ""
-                
-                if hasattr(music, 'hasSinger') and music.hasSinger:
-                    singer = music.hasSinger[0]
-                    if hasattr(singer, 'singerName') and singer.singerName:
-                        singer_name = singer.singerName[0]
-                    elif hasattr(singer, 'displayName') and singer.displayName:
-                        singer_name = singer.displayName[0]
-                    else:
-                        singer_name = singer.name
-                
-                genre_name = ""
-                if hasattr(music, 'hasGenre') and music.hasGenre:
-                    genre = music.hasGenre[0]
-                    if hasattr(genre, 'displayName') and genre.displayName:
-                        genre_name = genre.displayName[0]
-                    else:
-                        genre_name = genre.name
-                
-                year = ""
-                if hasattr(music, 'hasYear') and music.hasYear:
-                    year = music.hasYear[0]
-                elif hasattr(music, 'year') and music.year:
-                    year = music.year[0]
-                
-                music_dict = {
-                    'title': title,
-                    'year': year,
-                    'singer': singer_name,
-                    'genre': genre_name
-                }
-                musics.append(music_dict)
-        
-        if search:
-            search_lower = search.lower()
-            musics = [m for m in musics if search_lower in m['title'].lower()]
-        
-        reverse = order_dir == 'desc'
-        musics = sorted(musics, key=lambda m: str(m.get(order_by, '')).lower(), reverse=reverse)
-        result = musics[:limit]
-        return result
+            if count >= limit:
+                break
+            title = getattr(music, 'title', [''])[0] if hasattr(music, 'title') and music.title else ''
+            year = getattr(music, 'year', [''])[0] if hasattr(music, 'year') and music.year else ''
+            genre = ''
+            if hasattr(music, 'hasGenre') and music.hasGenre:
+                genre_obj = music.hasGenre[0]
+                genre = getattr(genre_obj, 'displayName', [''])[0] if hasattr(genre_obj, 'displayName') and genre_obj.displayName else ''
+            singer = ''
+            if hasattr(music, 'hasSinger') and music.hasSinger:
+                singer_obj = music.hasSinger[0]
+                singer = getattr(singer_obj, 'displayName', [''])[0] if hasattr(singer_obj, 'displayName') and singer_obj.displayName else ''
+            if search:
+                if search.lower() not in title.lower():
+                    continue
+            already_rated = False
+            if user_name:
+                user = self.onto.search_one(iri="*#" + user_name)
+                if user and hasattr(user, 'hasRated') and user.hasRated:
+                    for rating in user.hasRated:
+                        if hasattr(rating, 'ratedMusic') and rating.ratedMusic:
+                            rated_music = rating.ratedMusic[0]
+                            if rated_music == music:
+                                already_rated = True
+                                break
+            musics.append({
+                'title': title,
+                'year': year,
+                'genre': genre,
+                'singer': singer,
+                'already_rated': already_rated
+            })
+            count += 1
+        return musics
 
     def add_rating(self, userName: str, music_title: str, stars: int):
         if self.onto is None:
@@ -291,10 +264,8 @@ class OntologyRepository:
         music = None
         if self.onto:
             user = self.onto.search_one(iri="*#" + userName)
-            # Try different ways to find the music
             music = self.onto.search_one(iri="*#" + music_title.replace(" ", "_"))
             if not music:
-                # Try searching by title property
                 all_individuals = list(self.onto.individuals())
                 for individual in all_individuals:
                     if hasattr(individual, 'title') and individual.title and individual.title[0] == music_title:
@@ -302,14 +273,12 @@ class OntologyRepository:
                         break
         
         if not user:
-            raise Exception(f'Usuário {userName} não encontrado')
+            raise Exception(f'User {userName} not found')
         if not music:
-            raise Exception(f'Música {music_title} não encontrada')
+            raise Exception(f'Music {music_title} not found')
         
-        # Create a unique rating name
         rating_name = f"{userName}_{music_title.replace(' ', '_')}_rating"
         
-        # Check if rating already exists
         existing_rating = None
         if hasattr(user, 'hasRated') and user.hasRated:
             for r in user.hasRated:
@@ -318,12 +287,10 @@ class OntologyRepository:
                     break
         
         if existing_rating:
-            # Update existing rating
             existing_rating.hasStars = [stars]
             self.save()
             return existing_rating
         
-        # Create new rating
         if self.onto and hasattr(self.onto, 'Rating') and self.onto.Rating is not None:
             try:
                 with self.onto:
@@ -331,7 +298,6 @@ class OntologyRepository:
                     rating.hasStars = [stars]
                     rating.ratedMusic = [music]
                     
-                    # Add rating to user
                     if not hasattr(user, 'hasRated'):
                         user.hasRated = []
                     user.hasRated.append(rating)
@@ -353,31 +319,21 @@ class OntologyRepository:
         music = None
         if self.onto:
             user = self.onto.search_one(iri="*#" + userName)
-            # Try different ways to find the music
             music = self.onto.search_one(iri="*#" + music_title.replace(" ", "_"))
             if not music:
-                # Try searching by title property
                 all_individuals = list(self.onto.individuals())
                 for individual in all_individuals:
                     if hasattr(individual, 'title') and individual.title and individual.title[0] == music_title:
                         music = individual
                         break
         
-        print(f"Debug: get_user_rating - userName: {userName}, music_title: {music_title}")
-        print(f"Debug: get_user_rating - user found: {user is not None}")
-        print(f"Debug: get_user_rating - music found: {music is not None}")
-        
         if not user or not music:
-            print(f"Debug: get_user_rating - returning None (user or music not found)")
             return None
         
         if hasattr(user, 'hasRated') and user.hasRated:
-            print(f"Debug: get_user_rating - user has {len(user.hasRated)} ratings")
             for rating in user.hasRated:
                 if hasattr(rating, 'ratedMusic') and rating.ratedMusic:
                     rated_music = rating.ratedMusic[0]
-                    print(f"Debug: get_user_rating - checking rating for music: {rated_music.name if rated_music else 'None'}")
-                    # Compare by name or title
                     if rated_music and music:
                         rated_music_title = None
                         if hasattr(rated_music, 'title') and rated_music.title:
@@ -393,15 +349,13 @@ class OntologyRepository:
                         
                         if rated_music_title == music_title_compare:
                             if hasattr(rating, 'hasStars') and rating.hasStars:
-                                print(f"Debug: get_user_rating - found rating: {rating.hasStars[0]}")
                                 return rating.hasStars[0]
         else:
-            print(f"Debug: get_user_rating - user has no ratings")
+            return None
         
-        print(f"Debug: get_user_rating - returning None (no rating found)")
         return None
 
-    def list_recommended_musics(self, user_name):
+    def get_user_genre_preferences(self, user_name: str):
         if self.onto is None:
             self.onto = self.load()
         if self.onto is not None:
@@ -411,31 +365,225 @@ class OntologyRepository:
         if self.onto:
             user = self.onto.search_one(iri="*#" + user_name)
         
-        musics = []
-        if user and hasattr(user, 'recommendMusic'):
-            for m in getattr(user, 'recommendMusic', []):
-                if hasattr(m, 'title') and m.title:
+        if not user:
+            return []
+        
+        genre_ratings = {}
+        
+        if hasattr(user, 'hasRated') and user.hasRated:
+            for rating in user.hasRated:
+                if hasattr(rating, 'hasStars') and rating.hasStars:
+                    stars_value = rating.hasStars[0]
+                    if isinstance(stars_value, str):
+                        try:
+                            stars_value = int(stars_value)
+                        except ValueError:
+                            continue
+                    
+                    if stars_value >= 4:
+                        if hasattr(rating, 'ratedMusic') and rating.ratedMusic:
+                            music = rating.ratedMusic[0]
+                            if hasattr(music, 'hasGenre') and music.hasGenre:
+                                genre = music.hasGenre[0]
+                                genre_name = ""
+                                if hasattr(genre, 'displayName') and genre.displayName:
+                                    genre_name = genre.displayName[0]
+                                else:
+                                    genre_name = genre.name
+                                
+                                if genre_name not in genre_ratings:
+                                    genre_ratings[genre_name] = []
+                                genre_ratings[genre_name].append(stars_value)
+        else:
+            return []
+        
+        preferences = []
+        for genre, ratings in genre_ratings.items():
+            if len(ratings) > 0: 
+                preferences.append(genre)
+        
+        return preferences
+
+    def add_genre_preference(self, user_name: str, genre_name: str):
+        if self.onto is None:
+            self.onto = self.load()
+        if self.onto is not None:
+            self.ensure_classes()
+        
+        user = None
+        genre = None
+        if self.onto:
+            user = self.onto.search_one(iri="*#" + user_name)
+            genre = self.onto.search_one(iri="*#" + genre_name)
+        
+        if not user:
+            raise Exception(f'User {user_name} not found')
+        if not genre:
+            raise Exception(f'Genre {genre_name} not found')
+        
+        if hasattr(user, 'hasPreference'):
+            if genre not in user.hasPreference:
+                user.hasPreference.append(genre)
+        else:
+            user.hasPreference = [genre]
+        
+        self.save()
+        return True
+
+    def get_user_preferences(self, user_name: str):
+        if self.onto is None:
+            self.onto = self.load()
+        if self.onto is not None:
+            self.ensure_classes()
+        
+        user = None
+        if self.onto:
+            user = self.onto.search_one(iri="*#" + user_name)
+        
+        if not user or not hasattr(user, 'hasPreference'):
+            return []
+        
+        preferences = []
+        for genre in user.hasPreference:
+            genre_name = ""
+            if hasattr(genre, 'displayName') and genre.displayName:
+                genre_name = genre.displayName[0]
+            else:
+                genre_name = genre.name
+            preferences.append(genre_name)
+        
+        return preferences
+
+    def list_recommended_musics(self, user_name, limit=10):
+        if self.onto is None:
+            self.onto = self.load()
+        if self.onto is not None:
+            self.ensure_classes()
+        
+        self.infer_genre_preferences(user_name)
+        
+        preferences = self.get_user_preferences(user_name)
+        
+        if not preferences:
+            return []
+        
+        all_musics = []
+        music_individuals = set()  
+        
+        try:
+            all_individuals = list(self.onto.individuals())
+            
+            for individual in all_individuals:
+                is_music = False
+                
+                if hasattr(individual, 'title') and individual.title:
+                    is_music = True
+                
+                elif hasattr(individual, 'hasGenre') and individual.hasGenre:
+                    is_music = True
+                
+                elif hasattr(individual, 'hasSinger') and individual.hasSinger:
+                    is_music = True
+                
+                elif any(word in individual.name.lower() for word in ['song', 'music', 'track', 'album']):
+                    is_music = True
+                
+                if is_music:
+                    music_individuals.add(individual)
+            
+            for music in music_individuals:
+                if len(all_musics) >= limit:
+                    break
+                
+                genre_name = ""
+                if hasattr(music, 'hasGenre') and music.hasGenre:
+                    genre = music.hasGenre[0]
+                    if hasattr(genre, 'displayName') and genre.displayName:
+                        genre_name = genre.displayName[0]
+                    else:
+                        genre_name = genre.name
+                
+                if genre_name.lower() in [p.lower() for p in preferences]:
+                    title = ""
+                    if hasattr(music, 'title') and music.title:
+                        title = music.title[0]
+                    elif hasattr(music, 'name'):
+                        title = music.name
+                    
                     singer_name = ""
-                    if hasattr(m, 'hasSinger') and m.hasSinger:
-                        singer = m.hasSinger[0]
+                    if hasattr(music, 'hasSinger') and music.hasSinger:
+                        singer = music.hasSinger[0]
                         if hasattr(singer, 'displayName') and singer.displayName:
                             singer_name = singer.displayName[0]
                         else:
                             singer_name = singer.name
                     
-                    genre_name = ""
-                    if hasattr(m, 'hasGenre') and m.hasGenre:
-                        genre = m.hasGenre[0]
-                        if hasattr(genre, 'displayName') and genre.displayName:
-                            genre_name = genre.displayName[0]
-                        else:
-                            genre_name = genre.name
+                    year = ""
+                    if hasattr(music, 'year') and music.year:
+                        year = music.year[0]
+                    elif hasattr(music, 'hasYear') and music.hasYear:
+                        year = music.hasYear[0]
+                    else:
+                        year = "N/A" 
+                    user_rating = self.get_user_rating(user_name, title)
                     
                     music_dict = {
-                        'title': m.title[0] if m.title else '',
-                        'year': m.year[0] if hasattr(m, 'year') and m.year else '',
+                        'title': title,
+                        'year': year,
                         'singer': singer_name,
-                        'genre': genre_name
+                        'genre': genre_name,
+                        'already_rated': user_rating is not None
                     }
-                    musics.append(music_dict)
-        return musics
+                    all_musics.append(music_dict)
+        except Exception as e:
+            print(f"Error getting music instances: {e}")
+        
+        return all_musics
+
+    def infer_genre_preferences(self, user_name: str):
+        preferences = self.get_user_genre_preferences(user_name)
+        
+        user = None
+        if self.onto:
+            user = self.onto.search_one(iri="*#" + user_name)
+        
+        if not user:
+            return
+        
+        for genre_name in preferences:
+            genre = None
+            if self.onto:
+                genre = self.onto.search_one(iri="*#" + genre_name)
+                if not genre:
+                    all_individuals = list(self.onto.individuals())
+                    for individual in all_individuals:
+                        if hasattr(individual, '__class__') and hasattr(individual.__class__, '__name__'):
+                            if individual.__class__.__name__ == 'Genre':
+                                if hasattr(individual, 'displayName') and individual.displayName:
+                                    if individual.displayName[0].lower() == genre_name.lower():
+                                        genre = individual
+                                        break
+                                elif hasattr(individual, 'name') and individual.name.lower() == genre_name.lower():
+                                    genre = individual
+                                    break
+            
+            if genre:
+                has_preference = False
+                if hasattr(user, 'hasPreference'):
+                    for pref in user.hasPreference:
+                        if hasattr(pref, 'displayName') and pref.displayName and pref.displayName[0].lower() == genre_name.lower():
+                            has_preference = True
+                            break
+                        elif hasattr(pref, 'name') and pref.name.lower() == genre_name.lower():
+                            has_preference = True
+                            break
+                
+                if not has_preference:
+                    if hasattr(user, 'hasPreference'):
+                        user.hasPreference.append(genre)
+                    else:
+                        user.hasPreference = [genre]
+            else:
+                print(f"Could not find genre '{genre_name}' in ontology")
+        
+        self.save()
