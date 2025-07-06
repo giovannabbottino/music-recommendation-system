@@ -115,18 +115,30 @@ def rate_music():
 @login_required
 def recommendations():
     limit = request.args.get('limit', '10')
+    search = request.args.get('search', '')
     try:
         limit = int(limit)
     except ValueError:
         limit = 10
 
     preferences = service.get_user_genre_preferences(session['user'])
-    
     all_preferences = service.get_user_preferences(session['user'])
     
-    recommended_musics = service.list_recommended_musics(session['user'], limit)
+    recommended_musics = service.list_recommended_musics(session['user'], 1000)
+    if search:
+        filtered_musics = []
+        for music in recommended_musics:
+            if search.lower() in music['title'].lower():
+                filtered_musics.append(music)
+        recommended_musics = filtered_musics
+
+    recommended_musics = recommended_musics[:limit]
     
-    return render_template('recommended.html', musics=recommended_musics, user=session['user'], limit=limit)
+    return render_template('recommended.html', 
+                         musics=recommended_musics, 
+                         user=session['user'], 
+                         limit=limit,
+                         search=search)
 
 @app.route('/add_music', methods=['GET', 'POST'])
 @login_required
