@@ -222,15 +222,15 @@ class OntologyRepository:
             if count >= limit:
                 break
             title = getattr(music, 'title', [''])[0] if hasattr(music, 'title') and music.title else ''
-            year = getattr(music, 'year', [''])[0] if hasattr(music, 'year') and music.year else ''
+            year = getattr(music, 'hasYear', [''])[0] if hasattr(music, 'hasYear') and music.hasYear else ''
             genre = ''
             if hasattr(music, 'hasGenre') and music.hasGenre:
                 genre_obj = music.hasGenre[0]
-                genre = getattr(genre_obj, 'displayName', [''])[0] if hasattr(genre_obj, 'displayName') and genre_obj.displayName else ''
+                genre = getattr(genre_obj, 'name', '') if hasattr(genre_obj, 'name') else ''
             singer = ''
             if hasattr(music, 'hasSinger') and music.hasSinger:
                 singer_obj = music.hasSinger[0]
-                singer = getattr(singer_obj, 'displayName', [''])[0] if hasattr(singer_obj, 'displayName') and singer_obj.displayName else ''
+                singer = getattr(singer_obj, 'singerName', [''])[0] if hasattr(singer_obj, 'singerName') and singer_obj.singerName else getattr(singer_obj, 'name', '')
             if search:
                 if search.lower() not in title.lower():
                     continue
