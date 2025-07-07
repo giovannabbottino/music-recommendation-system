@@ -88,10 +88,16 @@ def rate_music():
     
     music_title = submit_rating
     rating_key = f'rating_{music_title}'
+    genre_key = f'genre_{music_title}'
     stars_str = request.form.get(rating_key)
+    genre = request.form.get(genre_key)
     
     if not stars_str:
         flash('Please select a rating.', 'error')
+        return redirect(url_for('list_musics'))
+    
+    if not genre:
+        flash('Genre information is missing.', 'error')
         return redirect(url_for('list_musics'))
     
     try:
@@ -104,7 +110,7 @@ def rate_music():
         return redirect(url_for('list_musics'))
     
     try:
-        service.add_rating(session['user'], music_title, stars)
+        service.add_rating(session['user'], music_title, genre, stars)
         flash(f'Rating added for {music_title}!', 'success')
     except Exception as e:
         flash(str(e), 'error')

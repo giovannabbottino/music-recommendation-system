@@ -83,6 +83,7 @@
                         {% else %}
                             <small class="text-muted">No rating</small>
                         {% endif %}
+                        <input type="hidden" name="genre_{{ music.title }}" value="{{ music.genre }}">
                     </td>
                     <td>
                         <button type="submit" name="submit_rating" value="{{ music.title }}" class="btn btn-primary btn-sm">
