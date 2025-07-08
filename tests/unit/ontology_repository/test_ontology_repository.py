@@ -6,9 +6,9 @@ import shutil
 
 @pytest.fixture
 def sample_ontology():
-    """Fixture to use the data-test-copy.rdf file for all tests."""
-    original_file = os.path.join(os.path.dirname(__file__), '../../../data/data-test.rdf')
-    test_file = os.path.join(os.path.dirname(__file__), '../../../data/data-test-copy.rdf')
+    """Fixture to use the data-test.rdf file for all tests."""
+    original_file = os.path.join(os.path.dirname(__file__), '../../../data/data.rdf')
+    test_file = os.path.join(os.path.dirname(__file__), '../../../data/data-test.rdf')
     
     if not os.path.exists(original_file):
         pytest.skip(f"Arquivo original não encontrado: {original_file}")
@@ -281,13 +281,15 @@ def test_analyze_test_data_structure(sample_ontology):
     classes = [cls for cls in onto.classes()]
     
     for cls_name in ['User', 'Music', 'Genre', 'Singer', 'Rating']:
-        if hasattr(onto, cls_name):
-            instances = list(getattr(onto, cls_name).instances())
+        cls = next((c for c in onto.classes() if c.name == cls_name), None)
+        if cls is not None:
+            instances = list(cls.instances())
     
     music_by_title = onto.search_one(title="*")
     
-    if hasattr(onto, 'Music'):
-        music_instances = list(onto.Music.instances())
+    music_cls = next((c for c in onto.classes() if c.name == "Music"), None)
+    if music_cls is not None:
+        music_instances = list(music_cls.instances())
     
     all_with_title = onto.search(title="*")
     
@@ -298,15 +300,17 @@ def test_analyze_music_properties(sample_ontology):
     repo = OntologyRepository(sample_ontology)
     onto = repo.load()
     
-    music_instances = list(onto.Music.instances())
-    
-    if len(music_instances) > 0:
-        for i, music in enumerate(music_instances[:5]):
-            properties = [prop for prop in dir(music) if not prop.startswith('_')]
-            
-            for prop in ['title', 'hasYear', 'hasSinger', 'hasGenre']:
-                if hasattr(music, prop):
-                    value = getattr(music, prop)
+    music_cls = next((c for c in onto.classes() if c.name == "Music"), None)
+    if music_cls is not None:
+        music_instances = list(music_cls.instances())
+        
+        if len(music_instances) > 0:
+            for i, music in enumerate(music_instances[:5]):
+                properties = [prop for prop in dir(music) if not prop.startswith('_')]
+                
+                for prop in ['title', 'hasYear', 'hasSinger', 'hasGenre']:
+                    if hasattr(music, prop):
+                        value = getattr(music, prop)
     
     all_entities = list(onto.individuals())
     
@@ -336,8 +340,15 @@ def test_add_test_data_to_file(sample_ontology):
             music = repo.add_music(title, year, singer, genre)
            
         all_musics = repo.list_musics(limit=10)
+        assert len(all_musics) >= 5, f"Deveria ter pelo menos 5 músicas, mas encontrou {len(all_musics)}"
         
-        assert len(all_musics) >= 5
+        # Verificar se as músicas têm as propriedades corretas
+        for music in all_musics:
+            assert 'title' in music
+            assert 'year' in music
+            assert 'genre' in music
+            assert 'singer' in music
+            assert 'already_rated' in music
         
     except Exception as e:
         print(f"❌ Erro ao adicionar dados de teste: {e}")
