@@ -6,11 +6,10 @@ This project uses an OWL ontology to represent entities and relationships in the
 
 ## Project Structure
 
-- `src/domain/`: Domain entities (Music, Genre, Singer, User, Rating)
 - `src/application/`: Application services (e.g., OntologyService)
 - `src/infrastructure/`: Integration with external technologies (e.g., Owlready2)
 - `src/app.py`: Application entry point
-- `data/data.rdf`: OWL ontology file
+- `data/data.rdf`: ontology file
 - `tests/`: Tests for the application
 
 ## How to Run Locally
