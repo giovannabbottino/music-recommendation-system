@@ -126,9 +126,6 @@ def recommendations():
         limit = int(limit)
     except ValueError:
         limit = 10
-
-    preferences = service.get_user_genre_preferences(session['user'])
-    all_preferences = service.get_user_preferences(session['user'])
     
     recommended_musics = service.list_recommended_musics(session['user'], 1000)
     if search:

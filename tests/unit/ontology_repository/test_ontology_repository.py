@@ -125,45 +125,6 @@ def test_get_user_rating(sample_ontology):
     rating3 = repo.get_user_rating('testuser', 'nonexistent')
     assert rating3 is None
 
-def test_get_user_genre_preferences(sample_ontology):
-    """Test getting user genre preferences based on high ratings."""
-    repo = OntologyRepository(sample_ontology)
-    repo.load()
-    
-    repo.add_user('testuser', 1990, 'test@example.com')
-    repo.add_music('Rock Song', '2020', 'Rock Singer', 'Rock')
-    repo.add_music('Pop Song', '2020', 'Pop Singer', 'Pop')
-    repo.add_music('Jazz Song', '2020', 'Jazz Singer', 'Jazz')
-    
-    repo.add_rating('testuser', 'Rock Song', 'Rock', 5)
-    repo.add_rating('testuser', 'Pop Song', 'Pop', 3) 
-    repo.add_rating('testuser', 'Jazz Song', 'Jazz', 4) 
-    
-    preferences = repo.get_user_genre_preferences('testuser')
-    assert 'Rock' in preferences
-    assert 'Jazz' in preferences
-    assert 'Pop' not in preferences 
-    
-    preferences2 = repo.get_user_genre_preferences('nonexistent')
-    assert preferences2 == []
-
-def test_add_genre_preference(sample_ontology):
-    """Test adding genre preference for user."""
-    repo = OntologyRepository(sample_ontology)
-    repo.load()
-    
-    repo.add_user('testuser', 1990, 'test@example.com')
-    repo.add_music('Test Song', '2020', 'Test Singer', 'Rock')
-    
-    result = repo.add_genre_preference('testuser', 'Rock')
-    assert result is True
-    
-    with pytest.raises(Exception, match="User or genre not found."):
-        repo.add_genre_preference('nonexistent', 'Rock')
-    
-    with pytest.raises(Exception, match="User or genre not found."):
-        repo.add_genre_preference('testuser', 'nonexistent')
-
 def test_get_user_preferences(sample_ontology):
     """Test getting user preferences."""
     repo = OntologyRepository(sample_ontology)
@@ -172,7 +133,7 @@ def test_get_user_preferences(sample_ontology):
     repo.add_user('testuser', 1990, 'test@example.com')
     repo.add_music('Test Song', '2020', 'Test Singer', 'Rock')
     
-    repo.add_genre_preference('testuser', 'Rock')
+    repo.add_rating('testuser', 'Test Song', 'Rock', 5)
     
     preferences = repo.get_user_preferences('testuser')
     assert 'Rock' in preferences

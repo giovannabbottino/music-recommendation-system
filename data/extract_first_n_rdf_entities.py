@@ -2,7 +2,7 @@ import re
 
 INPUT_FILE = "data/data.rdf"
 OUTPUT_FILE = "data/data-test.rdf"
-N_ENTITIES = 100
+N_ENTITIES = 10
 
 # Tags que representam entidades/classes/indivíduos RDF
 ENTITY_TAGS = [
