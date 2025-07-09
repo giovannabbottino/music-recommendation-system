@@ -189,7 +189,7 @@ class OntologyRepository:
         rating_class = self._get_class('Rating')
         user = self.onto.search_one(userName=user_name)
         music = self.onto.search_one(title=music_title)
-        genre = self.onto.search_one(genreName=genre_name)
+        genre = music.hasGenre[0] if music and hasattr(music, 'hasGenre') and music.hasGenre else None
 
         if not user or not music or not genre:
             raise Exception("User, music, or genre not found.")

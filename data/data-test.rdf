@@ -1074,6 +1074,67 @@
   <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1956</hasYear>
 </owl:NamedIndividual>
 
+<owl:NamedIndividual rdf:about="#GIOVANNA">
+  <rdf:type rdf:resource="#User"/>
+  <userName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GIOVANNA</userName>
+  <birthYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1999</birthYear>
+  <email rdf:datatype="http://www.w3.org/2001/XMLSchema#string">giovannabbottino@gmail.com</email>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#GIOVANNA_after_you_ve_gone_rating">
+  <rdf:type rdf:resource="#Rating"/>
+  <givenBy rdf:resource="#GIOVANNA"/>
+  <ratesSong rdf:resource="#Music_after_you've_gone"/>
+  <ratesGenre rdf:resource="#Genre_pop"/>
+  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Teste">
+  <rdf:type rdf:resource="#Singer"/>
+  <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Teste</singerName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#teste">
+  <rdf:type rdf:resource="#Genre"/>
+  <rdf:type rdf:resource="#Music"/>
+  <hasSinger rdf:resource="#Teste"/>
+  <hasGenre rdf:resource="#teste"/>
+  <genreName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">teste</genreName>
+  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">teste</title>
+  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1</hasYear>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#GIOVANNA_teste_rating">
+  <rdf:type rdf:resource="#Rating"/>
+  <givenBy rdf:resource="#GIOVANNA"/>
+  <ratesSong rdf:resource="#teste"/>
+  <ratesGenre rdf:resource="#teste"/>
+  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#GIOVANNA_al_di_la_rating">
+  <rdf:type rdf:resource="#Rating"/>
+  <givenBy rdf:resource="#GIOVANNA"/>
+  <ratesSong rdf:resource="#Music_al_di_la"/>
+  <ratesGenre rdf:resource="#Genre_pop"/>
+  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Outro">
+  <rdf:type rdf:resource="#User"/>
+  <userName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Outro</userName>
+  <birthYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1111</birthYear>
+  <email rdf:datatype="http://www.w3.org/2001/XMLSchema#string">outro@gmail.com</email>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Outro_ansoo_to_nahin_hai_ankhon_men_rating">
+  <rdf:type rdf:resource="#Rating"/>
+  <givenBy rdf:resource="#Outro"/>
+  <ratesSong rdf:resource="#Music_ansoo_to_nahin_hai_ankhon_men"/>
+  <ratesGenre rdf:resource="#Genre_pop"/>
+  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
+</owl:NamedIndividual>
+
 <owl:NamedIndividual rdf:about="#testuser">
   <rdf:type rdf:resource="#User"/>
   <userName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">testuser</userName>
@@ -1130,79 +1191,6 @@
   <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
 </owl:NamedIndividual>
 
-<owl:NamedIndividual rdf:about="#Rock_Singer">
-  <rdf:type rdf:resource="#Singer"/>
-  <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rock Singer</singerName>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Rock_Song">
-  <rdf:type rdf:resource="#Music"/>
-  <hasSinger rdf:resource="#Rock_Singer"/>
-  <hasGenre rdf:resource="#Rock"/>
-  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rock Song</title>
-  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2020</hasYear>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Pop_Singer">
-  <rdf:type rdf:resource="#Singer"/>
-  <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pop Singer</singerName>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Pop">
-  <rdf:type rdf:resource="#Genre"/>
-  <genreName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pop</genreName>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Pop_Song">
-  <rdf:type rdf:resource="#Music"/>
-  <hasSinger rdf:resource="#Pop_Singer"/>
-  <hasGenre rdf:resource="#Pop"/>
-  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pop Song</title>
-  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2020</hasYear>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Jazz_Singer">
-  <rdf:type rdf:resource="#Singer"/>
-  <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jazz Singer</singerName>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Jazz">
-  <rdf:type rdf:resource="#Genre"/>
-  <genreName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jazz</genreName>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#Jazz_Song">
-  <rdf:type rdf:resource="#Music"/>
-  <hasSinger rdf:resource="#Jazz_Singer"/>
-  <hasGenre rdf:resource="#Jazz"/>
-  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jazz Song</title>
-  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2020</hasYear>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#testuser_Rock_Song_rating">
-  <rdf:type rdf:resource="#Rating"/>
-  <givenBy rdf:resource="#testuser"/>
-  <ratesSong rdf:resource="#Rock_Song"/>
-  <ratesGenre rdf:resource="#Rock"/>
-  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#testuser_Pop_Song_rating">
-  <rdf:type rdf:resource="#Rating"/>
-  <givenBy rdf:resource="#testuser"/>
-  <ratesSong rdf:resource="#Pop_Song"/>
-  <ratesGenre rdf:resource="#Pop"/>
-  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</stars>
-</owl:NamedIndividual>
-
-<owl:NamedIndividual rdf:about="#testuser_Jazz_Song_rating">
-  <rdf:type rdf:resource="#Rating"/>
-  <givenBy rdf:resource="#testuser"/>
-  <ratesSong rdf:resource="#Jazz_Song"/>
-  <ratesGenre rdf:resource="#Jazz"/>
-  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</stars>
-</owl:NamedIndividual>
-
 <owl:NamedIndividual rdf:about="#Rock_Singer_1">
   <rdf:type rdf:resource="#Singer"/>
   <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rock Singer 1</singerName>
@@ -1226,6 +1214,24 @@
   <hasSinger rdf:resource="#Rock_Singer_2"/>
   <hasGenre rdf:resource="#Rock"/>
   <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rock Song 2</title>
+  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2020</hasYear>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Pop_Singer">
+  <rdf:type rdf:resource="#Singer"/>
+  <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pop Singer</singerName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Pop">
+  <rdf:type rdf:resource="#Genre"/>
+  <genreName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pop</genreName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Pop_Song">
+  <rdf:type rdf:resource="#Music"/>
+  <hasSinger rdf:resource="#Pop_Singer"/>
+  <hasGenre rdf:resource="#Pop"/>
+  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pop Song</title>
   <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2020</hasYear>
 </owl:NamedIndividual>
 
@@ -1306,136 +1312,114 @@
 <swrl:Imp>
   <swrl:body>
     <rdf:Description>
-      <rdf:first>
-        <swrl:IndividualPropertyAtom>
-          <swrl:propertyPredicate rdf:resource="#hasPreference"/>
-          <swrl:argument1 rdf:resource="urn:swrl#u1"/>
-          <swrl:argument2 rdf:resource="urn:swrl#g"/>
-        </swrl:IndividualPropertyAtom>
-      </rdf:first>
-      <rdf:rest>
-        <rdf:Description>
-          <rdf:first>
-            <swrl:IndividualPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#hasPreference"/>
-              <swrl:argument1 rdf:resource="urn:swrl#u2"/>
-              <swrl:argument2 rdf:resource="urn:swrl#g"/>
-            </swrl:IndividualPropertyAtom>
-          </rdf:first>
-          <rdf:rest>
-            <rdf:Description>
-              <rdf:first>
-                <swrl:ClassAtom>
-                  <swrl:classPredicate rdf:resource="#Rating"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                </swrl:ClassAtom>
-              </rdf:first>
-              <rdf:rest>
-                <rdf:Description>
-                  <rdf:first>
-                    <swrl:IndividualPropertyAtom>
-                      <swrl:propertyPredicate rdf:resource="#givenBy"/>
-                      <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                      <swrl:argument2 rdf:resource="urn:swrl#u2"/>
-                    </swrl:IndividualPropertyAtom>
-                  </rdf:first>
-                  <rdf:rest>
-                    <rdf:Description>
-                      <rdf:first>
-                        <swrl:DatavaluedPropertyAtom>
-                          <swrl:propertyPredicate rdf:resource="#stars"/>
-                          <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                          <swrl:argument2 rdf:resource="urn:swrl#s"/>
-                        </swrl:DatavaluedPropertyAtom>
-                      </rdf:first>
-                      <rdf:rest>
-                        <rdf:Description>
-                          <rdf:first>
-                            <swrl:BuiltinAtom>
-                              <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThanOrEqual"/>
-                              <swrl:arguments>
-                                <rdf:Description>
-                                  <rdf:first rdf:resource="urn:swrl#s"/>
-                                  <rdf:rest>
-                                    <rdf:Description>
-                                      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                      <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</rdf:first>
-                                    </rdf:Description>
-                                  </rdf:rest>
-                                </rdf:Description>
-                              </swrl:arguments>
-                            </swrl:BuiltinAtom>
-                          </rdf:first>
-                          <rdf:rest>
-                            <rdf:Description>
-                              <rdf:first>
-                                <swrl:IndividualPropertyAtom>
-                                  <swrl:propertyPredicate rdf:resource="#ratesSong"/>
-                                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                                  <swrl:argument2 rdf:resource="urn:swrl#m"/>
-                                </swrl:IndividualPropertyAtom>
-                              </rdf:first>
-                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                            </rdf:Description>
-                          </rdf:rest>
-                        </rdf:Description>
-                      </rdf:rest>
-                    </rdf:Description>
-                  </rdf:rest>
-                </rdf:Description>
-              </rdf:rest>
-            </rdf:Description>
-          </rdf:rest>
-        </rdf:Description>
-      </rdf:rest>
+      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
     </rdf:Description>
   </swrl:body>
   <swrl:head>
     <rdf:Description>
-      <rdf:first>
-        <swrl:IndividualPropertyAtom>
-          <swrl:propertyPredicate rdf:resource="#RecommendedMusic"/>
-          <swrl:argument1 rdf:resource="urn:swrl#u1"/>
-          <swrl:argument2 rdf:resource="urn:swrl#m"/>
-        </swrl:IndividualPropertyAtom>
-      </rdf:first>
+      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
       <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
     </rdf:Description>
   </swrl:head>
 </swrl:Imp>
+
+<swrl:ClassAtom>
+  <swrl:classPredicate rdf:resource="#Rating"/>
+  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+</swrl:ClassAtom>
+
+<swrl:DatavaluedPropertyAtom>
+  <swrl:propertyPredicate rdf:resource="#stars"/>
+  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+  <swrl:argument2 rdf:resource="urn:swrl#s"/>
+</swrl:DatavaluedPropertyAtom>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:ClassAtom>
+  <swrl:classPredicate rdf:resource="#Rating"/>
+  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+</swrl:ClassAtom>
+
+<swrl:DatavaluedPropertyAtom>
+  <swrl:propertyPredicate rdf:resource="#stars"/>
+  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+  <swrl:argument2 rdf:resource="urn:swrl#s"/>
+</swrl:DatavaluedPropertyAtom>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:ClassAtom>
+  <swrl:classPredicate rdf:resource="#Rating"/>
+  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+</swrl:ClassAtom>
+
+<swrl:DatavaluedPropertyAtom>
+  <swrl:propertyPredicate rdf:resource="#stars"/>
+  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+  <swrl:argument2 rdf:resource="urn:swrl#s"/>
+</swrl:DatavaluedPropertyAtom>
 
 <swrl:Imp>
   <swrl:body>
     <rdf:Description>
       <rdf:first>
         <swrl:ClassAtom>
-          <swrl:classPredicate rdf:resource="#User"/>
-          <swrl:argument1 rdf:resource="urn:swrl#u"/>
+          <swrl:classPredicate rdf:resource="#Rating"/>
+          <swrl:argument1 rdf:resource="urn:swrl#r"/>
         </swrl:ClassAtom>
       </rdf:first>
       <rdf:rest>
         <rdf:Description>
           <rdf:first>
-            <swrl:IndividualPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#hasPreference"/>
-              <swrl:argument1 rdf:resource="urn:swrl#u"/>
-              <swrl:argument2 rdf:resource="urn:swrl#g"/>
-            </swrl:IndividualPropertyAtom>
+            <swrl:DatavaluedPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#stars"/>
+              <swrl:argument1 rdf:resource="urn:swrl#r"/>
+              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</swrl:argument2>
+            </swrl:DatavaluedPropertyAtom>
           </rdf:first>
           <rdf:rest>
             <rdf:Description>
               <rdf:first>
-                <swrl:ClassAtom>
-                  <swrl:classPredicate rdf:resource="#Music"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#m"/>
-                </swrl:ClassAtom>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#givenBy"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#u"/>
+                </swrl:IndividualPropertyAtom>
               </rdf:first>
               <rdf:rest>
                 <rdf:Description>
                   <rdf:first>
                     <swrl:IndividualPropertyAtom>
-                      <swrl:propertyPredicate rdf:resource="#hasGenre"/>
-                      <swrl:argument1 rdf:resource="urn:swrl#m"/>
+                      <swrl:propertyPredicate rdf:resource="#ratesGenre"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#r"/>
                       <swrl:argument2 rdf:resource="urn:swrl#g"/>
                     </swrl:IndividualPropertyAtom>
                   </rdf:first>
@@ -1452,9 +1436,9 @@
     <rdf:Description>
       <rdf:first>
         <swrl:IndividualPropertyAtom>
-          <swrl:propertyPredicate rdf:resource="#RecommendedMusic"/>
+          <swrl:propertyPredicate rdf:resource="#hasPreference"/>
           <swrl:argument1 rdf:resource="urn:swrl#u"/>
-          <swrl:argument2 rdf:resource="urn:swrl#m"/>
+          <swrl:argument2 rdf:resource="urn:swrl#g"/>
         </swrl:IndividualPropertyAtom>
       </rdf:first>
       <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
@@ -1526,166 +1510,6 @@
     <rdf:Description>
       <rdf:first>
         <swrl:ClassAtom>
-          <swrl:classPredicate rdf:resource="#Rating"/>
-          <swrl:argument1 rdf:resource="urn:swrl#r"/>
-        </swrl:ClassAtom>
-      </rdf:first>
-      <rdf:rest>
-        <rdf:Description>
-          <rdf:first>
-            <swrl:DatavaluedPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#stars"/>
-              <swrl:argument1 rdf:resource="urn:swrl#r"/>
-              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</swrl:argument2>
-            </swrl:DatavaluedPropertyAtom>
-          </rdf:first>
-          <rdf:rest>
-            <rdf:Description>
-              <rdf:first>
-                <swrl:IndividualPropertyAtom>
-                  <swrl:propertyPredicate rdf:resource="#givenBy"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                  <swrl:argument2 rdf:resource="urn:swrl#u"/>
-                </swrl:IndividualPropertyAtom>
-              </rdf:first>
-              <rdf:rest>
-                <rdf:Description>
-                  <rdf:first>
-                    <swrl:IndividualPropertyAtom>
-                      <swrl:propertyPredicate rdf:resource="#ratesGenre"/>
-                      <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                      <swrl:argument2 rdf:resource="urn:swrl#g"/>
-                    </swrl:IndividualPropertyAtom>
-                  </rdf:first>
-                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                </rdf:Description>
-              </rdf:rest>
-            </rdf:Description>
-          </rdf:rest>
-        </rdf:Description>
-      </rdf:rest>
-    </rdf:Description>
-  </swrl:body>
-  <swrl:head>
-    <rdf:Description>
-      <rdf:first>
-        <swrl:IndividualPropertyAtom>
-          <swrl:propertyPredicate rdf:resource="#hasPreference"/>
-          <swrl:argument1 rdf:resource="urn:swrl#u"/>
-          <swrl:argument2 rdf:resource="urn:swrl#g"/>
-        </swrl:IndividualPropertyAtom>
-      </rdf:first>
-      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-    </rdf:Description>
-  </swrl:head>
-</swrl:Imp>
-
-<swrl:Imp>
-  <swrl:body>
-    <rdf:Description>
-      <rdf:first>
-        <swrl:IndividualPropertyAtom>
-          <swrl:propertyPredicate rdf:resource="#hasPreference"/>
-          <swrl:argument1 rdf:resource="urn:swrl#u1"/>
-          <swrl:argument2 rdf:resource="urn:swrl#g"/>
-        </swrl:IndividualPropertyAtom>
-      </rdf:first>
-      <rdf:rest>
-        <rdf:Description>
-          <rdf:first>
-            <swrl:IndividualPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#hasPreference"/>
-              <swrl:argument1 rdf:resource="urn:swrl#u2"/>
-              <swrl:argument2 rdf:resource="urn:swrl#g"/>
-            </swrl:IndividualPropertyAtom>
-          </rdf:first>
-          <rdf:rest>
-            <rdf:Description>
-              <rdf:first>
-                <swrl:ClassAtom>
-                  <swrl:classPredicate rdf:resource="#Rating"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                </swrl:ClassAtom>
-              </rdf:first>
-              <rdf:rest>
-                <rdf:Description>
-                  <rdf:first>
-                    <swrl:IndividualPropertyAtom>
-                      <swrl:propertyPredicate rdf:resource="#givenBy"/>
-                      <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                      <swrl:argument2 rdf:resource="urn:swrl#u2"/>
-                    </swrl:IndividualPropertyAtom>
-                  </rdf:first>
-                  <rdf:rest>
-                    <rdf:Description>
-                      <rdf:first>
-                        <swrl:DatavaluedPropertyAtom>
-                          <swrl:propertyPredicate rdf:resource="#stars"/>
-                          <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                          <swrl:argument2 rdf:resource="urn:swrl#s"/>
-                        </swrl:DatavaluedPropertyAtom>
-                      </rdf:first>
-                      <rdf:rest>
-                        <rdf:Description>
-                          <rdf:first>
-                            <swrl:BuiltinAtom>
-                              <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThanOrEqual"/>
-                              <swrl:arguments>
-                                <rdf:Description>
-                                  <rdf:first rdf:resource="urn:swrl#s"/>
-                                  <rdf:rest>
-                                    <rdf:Description>
-                                      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                                      <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</rdf:first>
-                                    </rdf:Description>
-                                  </rdf:rest>
-                                </rdf:Description>
-                              </swrl:arguments>
-                            </swrl:BuiltinAtom>
-                          </rdf:first>
-                          <rdf:rest>
-                            <rdf:Description>
-                              <rdf:first>
-                                <swrl:IndividualPropertyAtom>
-                                  <swrl:propertyPredicate rdf:resource="#ratesSong"/>
-                                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                                  <swrl:argument2 rdf:resource="urn:swrl#m"/>
-                                </swrl:IndividualPropertyAtom>
-                              </rdf:first>
-                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                            </rdf:Description>
-                          </rdf:rest>
-                        </rdf:Description>
-                      </rdf:rest>
-                    </rdf:Description>
-                  </rdf:rest>
-                </rdf:Description>
-              </rdf:rest>
-            </rdf:Description>
-          </rdf:rest>
-        </rdf:Description>
-      </rdf:rest>
-    </rdf:Description>
-  </swrl:body>
-  <swrl:head>
-    <rdf:Description>
-      <rdf:first>
-        <swrl:IndividualPropertyAtom>
-          <swrl:propertyPredicate rdf:resource="#RecommendedMusic"/>
-          <swrl:argument1 rdf:resource="urn:swrl#u1"/>
-          <swrl:argument2 rdf:resource="urn:swrl#m"/>
-        </swrl:IndividualPropertyAtom>
-      </rdf:first>
-      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-    </rdf:Description>
-  </swrl:head>
-</swrl:Imp>
-
-<swrl:Imp>
-  <swrl:body>
-    <rdf:Description>
-      <rdf:first>
-        <swrl:ClassAtom>
           <swrl:classPredicate rdf:resource="#User"/>
           <swrl:argument1 rdf:resource="urn:swrl#u"/>
         </swrl:ClassAtom>
@@ -1732,124 +1556,6 @@
           <swrl:propertyPredicate rdf:resource="#RecommendedMusic"/>
           <swrl:argument1 rdf:resource="urn:swrl#u"/>
           <swrl:argument2 rdf:resource="urn:swrl#m"/>
-        </swrl:IndividualPropertyAtom>
-      </rdf:first>
-      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-    </rdf:Description>
-  </swrl:head>
-</swrl:Imp>
-
-<swrl:Imp>
-  <swrl:body>
-    <rdf:Description>
-      <rdf:first>
-        <swrl:ClassAtom>
-          <swrl:classPredicate rdf:resource="#Rating"/>
-          <swrl:argument1 rdf:resource="urn:swrl#r"/>
-        </swrl:ClassAtom>
-      </rdf:first>
-      <rdf:rest>
-        <rdf:Description>
-          <rdf:first>
-            <swrl:DatavaluedPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#stars"/>
-              <swrl:argument1 rdf:resource="urn:swrl#r"/>
-              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</swrl:argument2>
-            </swrl:DatavaluedPropertyAtom>
-          </rdf:first>
-          <rdf:rest>
-            <rdf:Description>
-              <rdf:first>
-                <swrl:IndividualPropertyAtom>
-                  <swrl:propertyPredicate rdf:resource="#givenBy"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                  <swrl:argument2 rdf:resource="urn:swrl#u"/>
-                </swrl:IndividualPropertyAtom>
-              </rdf:first>
-              <rdf:rest>
-                <rdf:Description>
-                  <rdf:first>
-                    <swrl:IndividualPropertyAtom>
-                      <swrl:propertyPredicate rdf:resource="#ratesGenre"/>
-                      <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                      <swrl:argument2 rdf:resource="urn:swrl#g"/>
-                    </swrl:IndividualPropertyAtom>
-                  </rdf:first>
-                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                </rdf:Description>
-              </rdf:rest>
-            </rdf:Description>
-          </rdf:rest>
-        </rdf:Description>
-      </rdf:rest>
-    </rdf:Description>
-  </swrl:body>
-  <swrl:head>
-    <rdf:Description>
-      <rdf:first>
-        <swrl:IndividualPropertyAtom>
-          <swrl:propertyPredicate rdf:resource="#hasPreference"/>
-          <swrl:argument1 rdf:resource="urn:swrl#u"/>
-          <swrl:argument2 rdf:resource="urn:swrl#g"/>
-        </swrl:IndividualPropertyAtom>
-      </rdf:first>
-      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-    </rdf:Description>
-  </swrl:head>
-</swrl:Imp>
-
-<swrl:Imp>
-  <swrl:body>
-    <rdf:Description>
-      <rdf:first>
-        <swrl:ClassAtom>
-          <swrl:classPredicate rdf:resource="#Rating"/>
-          <swrl:argument1 rdf:resource="urn:swrl#r"/>
-        </swrl:ClassAtom>
-      </rdf:first>
-      <rdf:rest>
-        <rdf:Description>
-          <rdf:first>
-            <swrl:DatavaluedPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#stars"/>
-              <swrl:argument1 rdf:resource="urn:swrl#r"/>
-              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</swrl:argument2>
-            </swrl:DatavaluedPropertyAtom>
-          </rdf:first>
-          <rdf:rest>
-            <rdf:Description>
-              <rdf:first>
-                <swrl:IndividualPropertyAtom>
-                  <swrl:propertyPredicate rdf:resource="#givenBy"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                  <swrl:argument2 rdf:resource="urn:swrl#u"/>
-                </swrl:IndividualPropertyAtom>
-              </rdf:first>
-              <rdf:rest>
-                <rdf:Description>
-                  <rdf:first>
-                    <swrl:IndividualPropertyAtom>
-                      <swrl:propertyPredicate rdf:resource="#ratesGenre"/>
-                      <swrl:argument1 rdf:resource="urn:swrl#r"/>
-                      <swrl:argument2 rdf:resource="urn:swrl#g"/>
-                    </swrl:IndividualPropertyAtom>
-                  </rdf:first>
-                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-                </rdf:Description>
-              </rdf:rest>
-            </rdf:Description>
-          </rdf:rest>
-        </rdf:Description>
-      </rdf:rest>
-    </rdf:Description>
-  </swrl:body>
-  <swrl:head>
-    <rdf:Description>
-      <rdf:first>
-        <swrl:IndividualPropertyAtom>
-          <swrl:propertyPredicate rdf:resource="#hasPreference"/>
-          <swrl:argument1 rdf:resource="urn:swrl#u"/>
-          <swrl:argument2 rdf:resource="urn:swrl#g"/>
         </swrl:IndividualPropertyAtom>
       </rdf:first>
       <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
@@ -1963,33 +1669,34 @@
     <rdf:Description>
       <rdf:first>
         <swrl:ClassAtom>
-          <swrl:classPredicate rdf:resource="#User"/>
-          <swrl:argument1 rdf:resource="urn:swrl#u"/>
+          <swrl:classPredicate rdf:resource="#Rating"/>
+          <swrl:argument1 rdf:resource="urn:swrl#r"/>
         </swrl:ClassAtom>
       </rdf:first>
       <rdf:rest>
         <rdf:Description>
           <rdf:first>
-            <swrl:IndividualPropertyAtom>
-              <swrl:propertyPredicate rdf:resource="#hasPreference"/>
-              <swrl:argument1 rdf:resource="urn:swrl#u"/>
-              <swrl:argument2 rdf:resource="urn:swrl#g"/>
-            </swrl:IndividualPropertyAtom>
+            <swrl:DatavaluedPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#stars"/>
+              <swrl:argument1 rdf:resource="urn:swrl#r"/>
+              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</swrl:argument2>
+            </swrl:DatavaluedPropertyAtom>
           </rdf:first>
           <rdf:rest>
             <rdf:Description>
               <rdf:first>
-                <swrl:ClassAtom>
-                  <swrl:classPredicate rdf:resource="#Music"/>
-                  <swrl:argument1 rdf:resource="urn:swrl#m"/>
-                </swrl:ClassAtom>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#givenBy"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#u"/>
+                </swrl:IndividualPropertyAtom>
               </rdf:first>
               <rdf:rest>
                 <rdf:Description>
                   <rdf:first>
                     <swrl:IndividualPropertyAtom>
-                      <swrl:propertyPredicate rdf:resource="#hasGenre"/>
-                      <swrl:argument1 rdf:resource="urn:swrl#m"/>
+                      <swrl:propertyPredicate rdf:resource="#ratesGenre"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#r"/>
                       <swrl:argument2 rdf:resource="urn:swrl#g"/>
                     </swrl:IndividualPropertyAtom>
                   </rdf:first>
@@ -2006,9 +1713,9 @@
     <rdf:Description>
       <rdf:first>
         <swrl:IndividualPropertyAtom>
-          <swrl:propertyPredicate rdf:resource="#RecommendedMusic"/>
+          <swrl:propertyPredicate rdf:resource="#hasPreference"/>
           <swrl:argument1 rdf:resource="urn:swrl#u"/>
-          <swrl:argument2 rdf:resource="urn:swrl#m"/>
+          <swrl:argument2 rdf:resource="urn:swrl#g"/>
         </swrl:IndividualPropertyAtom>
       </rdf:first>
       <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
@@ -2080,6 +1787,165 @@
     <rdf:Description>
       <rdf:first>
         <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#User"/>
+          <swrl:argument1 rdf:resource="urn:swrl#u"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#hasPreference"/>
+              <swrl:argument1 rdf:resource="urn:swrl#u"/>
+              <swrl:argument2 rdf:resource="urn:swrl#g"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:ClassAtom>
+                  <swrl:classPredicate rdf:resource="#Music"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#m"/>
+                </swrl:ClassAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="#hasGenre"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#m"/>
+                      <swrl:argument2 rdf:resource="urn:swrl#g"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#RecommendedMusic"/>
+          <swrl:argument1 rdf:resource="urn:swrl#u"/>
+          <swrl:argument2 rdf:resource="urn:swrl#m"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#hasPreference"/>
+          <swrl:argument1 rdf:resource="urn:swrl#u1"/>
+          <swrl:argument2 rdf:resource="urn:swrl#g"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#hasPreference"/>
+              <swrl:argument1 rdf:resource="urn:swrl#u2"/>
+              <swrl:argument2 rdf:resource="urn:swrl#g"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:ClassAtom>
+                  <swrl:classPredicate rdf:resource="#Rating"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                </swrl:ClassAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="#givenBy"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                      <swrl:argument2 rdf:resource="urn:swrl#u2"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest>
+                    <rdf:Description>
+                      <rdf:first>
+                        <swrl:DatavaluedPropertyAtom>
+                          <swrl:propertyPredicate rdf:resource="#stars"/>
+                          <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                          <swrl:argument2 rdf:resource="urn:swrl#s"/>
+                        </swrl:DatavaluedPropertyAtom>
+                      </rdf:first>
+                      <rdf:rest>
+                        <rdf:Description>
+                          <rdf:first>
+                            <swrl:BuiltinAtom>
+                              <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThanOrEqual"/>
+                              <swrl:arguments>
+                                <rdf:Description>
+                                  <rdf:first rdf:resource="urn:swrl#s"/>
+                                  <rdf:rest>
+                                    <rdf:Description>
+                                      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                      <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</rdf:first>
+                                    </rdf:Description>
+                                  </rdf:rest>
+                                </rdf:Description>
+                              </swrl:arguments>
+                            </swrl:BuiltinAtom>
+                          </rdf:first>
+                          <rdf:rest>
+                            <rdf:Description>
+                              <rdf:first>
+                                <swrl:IndividualPropertyAtom>
+                                  <swrl:propertyPredicate rdf:resource="#ratesSong"/>
+                                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                                  <swrl:argument2 rdf:resource="urn:swrl#m"/>
+                                </swrl:IndividualPropertyAtom>
+                              </rdf:first>
+                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </rdf:Description>
+                          </rdf:rest>
+                        </rdf:Description>
+                      </rdf:rest>
+                    </rdf:Description>
+                  </rdf:rest>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
+    </rdf:Description>
+  </swrl:body>
+  <swrl:head>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#RecommendedMusic"/>
+          <swrl:argument1 rdf:resource="urn:swrl#u1"/>
+          <swrl:argument2 rdf:resource="urn:swrl#m"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+    </rdf:Description>
+  </swrl:head>
+</swrl:Imp>
+
+<swrl:Imp>
+  <swrl:body>
+    <rdf:Description>
+      <rdf:first>
+        <swrl:ClassAtom>
           <swrl:classPredicate rdf:resource="#Rating"/>
           <swrl:argument1 rdf:resource="urn:swrl#r"/>
         </swrl:ClassAtom>
@@ -2134,79 +2000,219 @@
   </swrl:head>
 </swrl:Imp>
 
-<swrl:DatavaluedPropertyAtom>
-  <swrl:propertyPredicate rdf:resource="#stars"/>
-  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-  <swrl:argument2 rdf:resource="urn:swrl#s"/>
-</swrl:DatavaluedPropertyAtom>
-
-<swrl:ClassAtom>
-  <swrl:classPredicate rdf:resource="#Rating"/>
-  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-</swrl:ClassAtom>
-
 <swrl:Imp>
   <swrl:body>
     <rdf:Description>
-      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#Rating"/>
+          <swrl:argument1 rdf:resource="urn:swrl#r"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:DatavaluedPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#stars"/>
+              <swrl:argument1 rdf:resource="urn:swrl#r"/>
+              <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</swrl:argument2>
+            </swrl:DatavaluedPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:IndividualPropertyAtom>
+                  <swrl:propertyPredicate rdf:resource="#givenBy"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                  <swrl:argument2 rdf:resource="urn:swrl#u"/>
+                </swrl:IndividualPropertyAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="#ratesGenre"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                      <swrl:argument2 rdf:resource="urn:swrl#g"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
     </rdf:Description>
   </swrl:body>
   <swrl:head>
     <rdf:Description>
-      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#hasPreference"/>
+          <swrl:argument1 rdf:resource="urn:swrl#u"/>
+          <swrl:argument2 rdf:resource="urn:swrl#g"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
       <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
     </rdf:Description>
   </swrl:head>
 </swrl:Imp>
 
-<swrl:DatavaluedPropertyAtom>
-  <swrl:propertyPredicate rdf:resource="#stars"/>
-  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-  <swrl:argument2 rdf:resource="urn:swrl#s"/>
-</swrl:DatavaluedPropertyAtom>
-
-<swrl:ClassAtom>
-  <swrl:classPredicate rdf:resource="#Rating"/>
-  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-</swrl:ClassAtom>
-
 <swrl:Imp>
   <swrl:body>
     <rdf:Description>
-      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+      <rdf:first>
+        <swrl:ClassAtom>
+          <swrl:classPredicate rdf:resource="#User"/>
+          <swrl:argument1 rdf:resource="urn:swrl#u"/>
+        </swrl:ClassAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#hasPreference"/>
+              <swrl:argument1 rdf:resource="urn:swrl#u"/>
+              <swrl:argument2 rdf:resource="urn:swrl#g"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:ClassAtom>
+                  <swrl:classPredicate rdf:resource="#Music"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#m"/>
+                </swrl:ClassAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="#hasGenre"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#m"/>
+                      <swrl:argument2 rdf:resource="urn:swrl#g"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
     </rdf:Description>
   </swrl:body>
   <swrl:head>
     <rdf:Description>
-      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#RecommendedMusic"/>
+          <swrl:argument1 rdf:resource="urn:swrl#u"/>
+          <swrl:argument2 rdf:resource="urn:swrl#m"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
       <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
     </rdf:Description>
   </swrl:head>
 </swrl:Imp>
 
-<swrl:DatavaluedPropertyAtom>
-  <swrl:propertyPredicate rdf:resource="#stars"/>
-  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-  <swrl:argument2 rdf:resource="urn:swrl#s"/>
-</swrl:DatavaluedPropertyAtom>
-
-<swrl:ClassAtom>
-  <swrl:classPredicate rdf:resource="#Rating"/>
-  <swrl:argument1 rdf:resource="urn:swrl#r"/>
-</swrl:ClassAtom>
-
 <swrl:Imp>
   <swrl:body>
     <rdf:Description>
-      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#hasPreference"/>
+          <swrl:argument1 rdf:resource="urn:swrl#u1"/>
+          <swrl:argument2 rdf:resource="urn:swrl#g"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
+      <rdf:rest>
+        <rdf:Description>
+          <rdf:first>
+            <swrl:IndividualPropertyAtom>
+              <swrl:propertyPredicate rdf:resource="#hasPreference"/>
+              <swrl:argument1 rdf:resource="urn:swrl#u2"/>
+              <swrl:argument2 rdf:resource="urn:swrl#g"/>
+            </swrl:IndividualPropertyAtom>
+          </rdf:first>
+          <rdf:rest>
+            <rdf:Description>
+              <rdf:first>
+                <swrl:ClassAtom>
+                  <swrl:classPredicate rdf:resource="#Rating"/>
+                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                </swrl:ClassAtom>
+              </rdf:first>
+              <rdf:rest>
+                <rdf:Description>
+                  <rdf:first>
+                    <swrl:IndividualPropertyAtom>
+                      <swrl:propertyPredicate rdf:resource="#givenBy"/>
+                      <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                      <swrl:argument2 rdf:resource="urn:swrl#u2"/>
+                    </swrl:IndividualPropertyAtom>
+                  </rdf:first>
+                  <rdf:rest>
+                    <rdf:Description>
+                      <rdf:first>
+                        <swrl:DatavaluedPropertyAtom>
+                          <swrl:propertyPredicate rdf:resource="#stars"/>
+                          <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                          <swrl:argument2 rdf:resource="urn:swrl#s"/>
+                        </swrl:DatavaluedPropertyAtom>
+                      </rdf:first>
+                      <rdf:rest>
+                        <rdf:Description>
+                          <rdf:first>
+                            <swrl:BuiltinAtom>
+                              <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThanOrEqual"/>
+                              <swrl:arguments>
+                                <rdf:Description>
+                                  <rdf:first rdf:resource="urn:swrl#s"/>
+                                  <rdf:rest>
+                                    <rdf:Description>
+                                      <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                      <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</rdf:first>
+                                    </rdf:Description>
+                                  </rdf:rest>
+                                </rdf:Description>
+                              </swrl:arguments>
+                            </swrl:BuiltinAtom>
+                          </rdf:first>
+                          <rdf:rest>
+                            <rdf:Description>
+                              <rdf:first>
+                                <swrl:IndividualPropertyAtom>
+                                  <swrl:propertyPredicate rdf:resource="#ratesSong"/>
+                                  <swrl:argument1 rdf:resource="urn:swrl#r"/>
+                                  <swrl:argument2 rdf:resource="urn:swrl#m"/>
+                                </swrl:IndividualPropertyAtom>
+                              </rdf:first>
+                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </rdf:Description>
+                          </rdf:rest>
+                        </rdf:Description>
+                      </rdf:rest>
+                    </rdf:Description>
+                  </rdf:rest>
+                </rdf:Description>
+              </rdf:rest>
+            </rdf:Description>
+          </rdf:rest>
+        </rdf:Description>
+      </rdf:rest>
     </rdf:Description>
   </swrl:body>
   <swrl:head>
     <rdf:Description>
-      <rdf:first rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+      <rdf:first>
+        <swrl:IndividualPropertyAtom>
+          <swrl:propertyPredicate rdf:resource="#RecommendedMusic"/>
+          <swrl:argument1 rdf:resource="urn:swrl#u1"/>
+          <swrl:argument2 rdf:resource="urn:swrl#m"/>
+        </swrl:IndividualPropertyAtom>
+      </rdf:first>
       <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
     </rdf:Description>
   </swrl:head>
