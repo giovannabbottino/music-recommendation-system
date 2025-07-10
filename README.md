@@ -1,5 +1,7 @@
 # Music Recommendation System
 
+[![Watch the video](https://img.youtube.com/vi/6IXPsbz7EQs/0.jpg)](https://www.youtube.com/watch?v=6IXPsbz7EQs)
+
 ## Overview
 
 This project uses an OWL ontology to represent entities and relationships in the music domain, such as songs, genres, singers, users, and ratings.
