@@ -1091,7 +1091,22 @@
 
 <owl:NamedIndividual rdf:about="#Teste">
   <rdf:type rdf:resource="#Singer"/>
+  <rdf:type rdf:resource="#Music"/>
+  <hasSinger rdf:resource="#teste"/>
+  <hasGenre rdf:resource="#teste"/>
   <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Teste</singerName>
+  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Teste</title>
+  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1000</hasYear>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Black_Sabbath">
+  <rdf:type rdf:resource="#Singer"/>
+  <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Black Sabbath</singerName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#genero">
+  <rdf:type rdf:resource="#Genre"/>
+  <genreName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">genero</genreName>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#teste">
@@ -1099,9 +1114,11 @@
   <rdf:type rdf:resource="#Music"/>
   <hasSinger rdf:resource="#Teste"/>
   <hasGenre rdf:resource="#teste"/>
+  <rdf:type rdf:resource="#Singer"/>
   <genreName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">teste</genreName>
   <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">teste</title>
   <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1</hasYear>
+  <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">teste</singerName>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#GIOVANNA_teste_rating">
@@ -1132,6 +1149,128 @@
   <givenBy rdf:resource="#Outro"/>
   <ratesSong rdf:resource="#Music_ansoo_to_nahin_hai_ankhon_men"/>
   <ratesGenre rdf:resource="#Genre_pop"/>
+  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#rock">
+  <rdf:type rdf:resource="#Genre"/>
+  <genreName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rock</genreName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Paranoid">
+  <rdf:type rdf:resource="#Music"/>
+  <hasSinger rdf:resource="#Black_Sabbath"/>
+  <hasGenre rdf:resource="#rock"/>
+  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Paranoid</title>
+  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1970</hasYear>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Led_Zeppelin">
+  <rdf:type rdf:resource="#Singer"/>
+  <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Led Zeppelin</singerName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Stairway_To_Heaven">
+  <rdf:type rdf:resource="#Music"/>
+  <hasSinger rdf:resource="#Led_Zeppelin"/>
+  <hasGenre rdf:resource="#rock"/>
+  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Stairway To Heaven</title>
+  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1971</hasYear>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Some_pop">
+  <rdf:type rdf:resource="#Music"/>
+  <hasSinger rdf:resource="#Black_Sabbath"/>
+  <hasGenre rdf:resource="#Genre_pop"/>
+  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Some pop</title>
+  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">2013</hasYear>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Lynyrd_Skynyrd">
+  <rdf:type rdf:resource="#Singer"/>
+  <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lynyrd Skynyrd</singerName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Tuesday_s_Gone">
+  <rdf:type rdf:resource="#Music"/>
+  <hasSinger rdf:resource="#Lynyrd_Skynyrd"/>
+  <hasGenre rdf:resource="#rock"/>
+  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tuesday's Gone</title>
+  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1973</hasYear>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Grand_Funk_Railroad">
+  <rdf:type rdf:resource="#Singer"/>
+  <singerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grand Funk Railroad</singerName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#The_Loco_Motion">
+  <rdf:type rdf:resource="#Music"/>
+  <hasSinger rdf:resource="#Grand_Funk_Railroad"/>
+  <hasGenre rdf:resource="#rock"/>
+  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The Loco-Motion</title>
+  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1974</hasYear>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#GIOVANNA_Some_pop_rating">
+  <rdf:type rdf:resource="#Rating"/>
+  <givenBy rdf:resource="#GIOVANNA"/>
+  <ratesSong rdf:resource="#Some_pop"/>
+  <ratesGenre rdf:resource="#Genre_pop"/>
+  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Same_author">
+  <rdf:type rdf:resource="#Music"/>
+  <hasSinger rdf:resource="#Black_Sabbath"/>
+  <hasGenre rdf:resource="#teste"/>
+  <title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Same author</title>
+  <hasYear rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1975</hasYear>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#GIOVANNA_Same_author_rating">
+  <rdf:type rdf:resource="#Rating"/>
+  <givenBy rdf:resource="#GIOVANNA"/>
+  <ratesSong rdf:resource="#Same_author"/>
+  <ratesGenre rdf:resource="#teste"/>
+  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Felipe">
+  <rdf:type rdf:resource="#User"/>
+  <userName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Felipe</userName>
+  <birthYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2000</birthYear>
+  <email rdf:datatype="http://www.w3.org/2001/XMLSchema#string">felipe@gmail.com</email>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Felipe_Stairway_To_Heaven_rating">
+  <rdf:type rdf:resource="#Rating"/>
+  <givenBy rdf:resource="#Felipe"/>
+  <ratesSong rdf:resource="#Stairway_To_Heaven"/>
+  <ratesGenre rdf:resource="#rock"/>
+  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Felipe_Teste_rating">
+  <rdf:type rdf:resource="#Rating"/>
+  <givenBy rdf:resource="#Felipe"/>
+  <ratesSong rdf:resource="#Teste"/>
+  <ratesGenre rdf:resource="#teste"/>
+  <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Felipe2">
+  <rdf:type rdf:resource="#User"/>
+  <userName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Felipe2</userName>
+  <birthYear rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2001</birthYear>
+  <email rdf:datatype="http://www.w3.org/2001/XMLSchema#string">felipe2@gmail.com</email>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#Felipe2_Paranoid_rating">
+  <rdf:type rdf:resource="#Rating"/>
+  <givenBy rdf:resource="#Felipe2"/>
+  <ratesSong rdf:resource="#Paranoid"/>
+  <ratesGenre rdf:resource="#rock"/>
   <stars rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</stars>
 </owl:NamedIndividual>
 
