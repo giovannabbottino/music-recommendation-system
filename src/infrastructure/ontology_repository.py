@@ -134,6 +134,13 @@ class OntologyRepository:
                 stars(?r, 5), ratesSong(?r, ?m)
                 -> RecommendedMusic(?u1, ?m)
             """)
+            rule4 = Imp()
+            rule4.set_as_rule("""
+                Rating(?r1), stars(?r1, 5), givenBy(?r1, ?u), ratesSong(?r1, ?m1), hasSinger(?m1, ?s),
+                Music(?m2), hasSinger(?m2, ?s)
+                -> RecommendedMusic(?u, ?m2)
+            """)
+
 
     def add_user(self, name: str, year: int, mail: str):
         self.load()
